@@ -1,0 +1,259 @@
+{
+  "info": {
+    "name": "Tigris Object Storage (S3-Compatible) API",
+    "description": {
+      "content": "AWS S3-compatible object storage served by Tigris at https://t3.storage.dev (legacy fly.storage.tigris.dev). Authenticated with AWS Signature Version 4 using a Tigris access key id (tid_...) and secret (tsec_...); service name s3, region auto. The companion IAM API is at https://iam.storage.dev.",
+      "type": "text/plain"
+    },
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "awsv4",
+    "awsv4": [
+      { "key": "service", "value": "s3", "type": "string" },
+      { "key": "region", "value": "auto", "type": "string" },
+      { "key": "accessKey", "value": "{{accessKey}}", "type": "string" },
+      { "key": "secretKey", "value": "{{secretKey}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://t3.storage.dev" },
+    { "key": "bucket", "value": "my-bucket" },
+    { "key": "key", "value": "my-object.txt" }
+  ],
+  "item": [
+    {
+      "name": "Buckets",
+      "item": [
+        {
+          "name": "ListBuckets",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/", "host": ["{{baseUrl}}"], "path": [""] },
+            "description": "List all buckets owned by the authenticated account."
+          }
+        },
+        {
+          "name": "CreateBucket",
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "{{baseUrl}}/{{bucket}}", "host": ["{{baseUrl}}"], "path": ["{{bucket}}"] },
+            "description": "Create a bucket."
+          }
+        },
+        {
+          "name": "ListObjectsV2",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/{{bucket}}?list-type=2",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{bucket}}"],
+              "query": [{ "key": "list-type", "value": "2" }]
+            },
+            "description": "List objects in a bucket."
+          }
+        },
+        {
+          "name": "HeadBucket",
+          "request": {
+            "method": "HEAD",
+            "url": { "raw": "{{baseUrl}}/{{bucket}}", "host": ["{{baseUrl}}"], "path": ["{{bucket}}"] },
+            "description": "Check that a bucket exists and is accessible."
+          }
+        },
+        {
+          "name": "DeleteBucket",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/{{bucket}}", "host": ["{{baseUrl}}"], "path": ["{{bucket}}"] },
+            "description": "Delete an empty bucket."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Objects",
+      "item": [
+        {
+          "name": "PutObject",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/octet-stream" },
+              { "key": "x-amz-storage-class", "value": "STANDARD" }
+            ],
+            "body": { "mode": "file", "file": { "src": "" } },
+            "url": { "raw": "{{baseUrl}}/{{bucket}}/{{key}}", "host": ["{{baseUrl}}"], "path": ["{{bucket}}", "{{key}}"] },
+            "description": "Upload an object. Set x-amz-storage-class to choose a tier (STANDARD, STANDARD_IA, GLACIER, GLACIER_IR)."
+          }
+        },
+        {
+          "name": "GetObject",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/{{bucket}}/{{key}}", "host": ["{{baseUrl}}"], "path": ["{{bucket}}", "{{key}}"] },
+            "description": "Download an object. Add a Range header for partial reads."
+          }
+        },
+        {
+          "name": "HeadObject",
+          "request": {
+            "method": "HEAD",
+            "url": { "raw": "{{baseUrl}}/{{bucket}}/{{key}}", "host": ["{{baseUrl}}"], "path": ["{{bucket}}", "{{key}}"] },
+            "description": "Retrieve object metadata without the body."
+          }
+        },
+        {
+          "name": "CopyObject",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "x-amz-copy-source", "value": "/{{bucket}}/source-object.txt" }],
+            "url": { "raw": "{{baseUrl}}/{{bucket}}/{{key}}", "host": ["{{baseUrl}}"], "path": ["{{bucket}}", "{{key}}"] },
+            "description": "Server-side copy an object using the x-amz-copy-source header."
+          }
+        },
+        {
+          "name": "DeleteObject",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/{{bucket}}/{{key}}", "host": ["{{baseUrl}}"], "path": ["{{bucket}}", "{{key}}"] },
+            "description": "Delete an object."
+          }
+        },
+        {
+          "name": "DeleteObjects",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/xml" }],
+            "body": { "mode": "raw", "raw": "<Delete><Object><Key>a.txt</Key></Object><Object><Key>b.txt</Key></Object></Delete>", "options": { "raw": { "language": "xml" } } },
+            "url": {
+              "raw": "{{baseUrl}}/{{bucket}}?delete",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{bucket}}"],
+              "query": [{ "key": "delete", "value": "" }]
+            },
+            "description": "Delete multiple objects in a single request."
+          }
+        },
+        {
+          "name": "PutObjectTagging",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/xml" }],
+            "body": { "mode": "raw", "raw": "<Tagging><TagSet><Tag><Key>env</Key><Value>prod</Value></Tag></TagSet></Tagging>", "options": { "raw": { "language": "xml" } } },
+            "url": {
+              "raw": "{{baseUrl}}/{{bucket}}/{{key}}?tagging",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{bucket}}", "{{key}}"],
+              "query": [{ "key": "tagging", "value": "" }]
+            },
+            "description": "Set the tag set on an object."
+          }
+        },
+        {
+          "name": "RestoreObject",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/{{bucket}}/{{key}}?restore",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{bucket}}", "{{key}}"],
+              "query": [{ "key": "restore", "value": "" }]
+            },
+            "description": "Restore an object stored in the Archive (GLACIER) tier."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Multipart",
+      "item": [
+        {
+          "name": "CreateMultipartUpload",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/{{bucket}}/{{key}}?uploads",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{bucket}}", "{{key}}"],
+              "query": [{ "key": "uploads", "value": "" }]
+            },
+            "description": "Initiate a multipart upload; returns an UploadId."
+          }
+        },
+        {
+          "name": "UploadPart",
+          "request": {
+            "method": "PUT",
+            "body": { "mode": "file", "file": { "src": "" } },
+            "url": {
+              "raw": "{{baseUrl}}/{{bucket}}/{{key}}?partNumber=1&uploadId={{uploadId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{bucket}}", "{{key}}"],
+              "query": [
+                { "key": "partNumber", "value": "1" },
+                { "key": "uploadId", "value": "{{uploadId}}" }
+              ]
+            },
+            "description": "Upload one part of a multipart upload."
+          }
+        },
+        {
+          "name": "CompleteMultipartUpload",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/xml" }],
+            "body": { "mode": "raw", "raw": "<CompleteMultipartUpload><Part><PartNumber>1</PartNumber><ETag>\"etag\"</ETag></Part></CompleteMultipartUpload>", "options": { "raw": { "language": "xml" } } },
+            "url": {
+              "raw": "{{baseUrl}}/{{bucket}}/{{key}}?uploadId={{uploadId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{bucket}}", "{{key}}"],
+              "query": [{ "key": "uploadId", "value": "{{uploadId}}" }]
+            },
+            "description": "Complete a multipart upload, assembling the parts into one object."
+          }
+        },
+        {
+          "name": "ListParts",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/{{bucket}}/{{key}}?uploadId={{uploadId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{bucket}}", "{{key}}"],
+              "query": [{ "key": "uploadId", "value": "{{uploadId}}" }]
+            },
+            "description": "List the uploaded parts of a multipart upload."
+          }
+        },
+        {
+          "name": "AbortMultipartUpload",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/{{bucket}}/{{key}}?uploadId={{uploadId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{bucket}}", "{{key}}"],
+              "query": [{ "key": "uploadId", "value": "{{uploadId}}" }]
+            },
+            "description": "Abort a multipart upload and discard its parts."
+          }
+        },
+        {
+          "name": "ListMultipartUploads",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/{{bucket}}?uploads",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{bucket}}"],
+              "query": [{ "key": "uploads", "value": "" }]
+            },
+            "description": "List in-progress multipart uploads in a bucket."
+          }
+        }
+      ]
+    }
+  ]
+}

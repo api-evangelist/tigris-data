@@ -1,0 +1,135 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Tigris
+providerId: tigris-data
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: true
+tags:
+- Object Storage
+- S3 Compatible
+- Storage
+- Multi-Cloud
+- Globally Distributed
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Tigris object storage spend. Tigris bills usage-based across
+  three cost drivers: stored data per GB-month by storage tier (Standard $0.02,
+  Infrequent Access $0.01, Archive and Archive Instant Retrieval $0.004), API
+  requests split into Class A (PUT/COPY/POST/LIST at $0.005/1k) and Class B
+  (GET/SELECT/other at $0.0005/1k), and object-notification events ($0.01/1k).
+  There are no egress/bandwidth fees for regional, region-to-region, or internet
+  data transfer out, which removes the largest variable cost line that drives
+  S3/GCS bills. Infrequent Access and Archive Instant Retrieval add per-GB
+  data-retrieval charges and minimum storage-duration commitments (30 / 90 days).
+notes: >-
+  Per-tier rates are subject to change; verify against the Tigris pricing page
+  during reconciliation. The free tier (5 GB Standard storage, 10k Class A, 100k
+  Class B per month) offsets baseline cost. DELETE and CANCEL operations are free.
+sources:
+- https://www.tigrisdata.com/pricing/
+- https://www.tigrisdata.com/docs/
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Tigris
+serviceCategory: Storage
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Tigris Object Storage
+  ServiceCategory: Storage
+  ProviderName: Tigris
+  PublisherName: Tigris
+  InvoiceIssuerName: Tigris
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Usage-Based
+meters:
+- name: standard_storage
+  description: Standard-tier data stored, billed per GB-month at $0.02.
+  unit: gb_month
+  aggregation: sum
+  dimensions:
+  - account
+  - bucket
+  - tier
+- name: infrequent_access_storage
+  description: Infrequent Access-tier data stored, billed per GB-month at $0.01 (30-day minimum).
+  unit: gb_month
+  aggregation: sum
+  dimensions:
+  - account
+  - bucket
+  - tier
+- name: archive_storage
+  description: Archive and Archive Instant Retrieval data stored, billed per GB-month at $0.004 (90-day minimum).
+  unit: gb_month
+  aggregation: sum
+  dimensions:
+  - account
+  - bucket
+  - tier
+- name: class_a_requests
+  description: Class A requests (PUT, COPY, POST, LIST) billed per 1,000 at $0.005.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - bucket
+  - operation
+- name: class_b_requests
+  description: Class B requests (GET, SELECT, and most others) billed per 1,000 at $0.0005.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - bucket
+  - operation
+- name: data_retrieval
+  description: Per-GB retrieval for Infrequent Access ($0.01/GB) and Archive Instant Retrieval ($0.03/GB); Standard and Archive retrieval are free.
+  unit: gb
+  aggregation: sum
+  dimensions:
+  - account
+  - bucket
+  - tier
+- name: egress
+  description: Data transfer out. Tigris charges no egress fees - this meter is informational only and always $0.
+  unit: gb
+  aggregation: sum
+  dimensions:
+  - account
+  - bucket
+- name: object_notifications
+  description: Object-notification events billed per 1,000 at $0.01.
+  unit: events
+  aggregation: sum
+  dimensions:
+  - account
+  - bucket
+principles:
+- name: Visibility
+  description: Pull Tigris usage and billing exports; break spend down by bucket, tier, and request class.
+- name: Allocation
+  description: Tag/segment access keys and buckets per workload/team; map to internal cost centers.
+- name: Optimization
+  description: Tier cold data to Infrequent Access or Archive; consolidate small objects to cut Class A request volume; rely on zero-egress to read globally without bandwidth penalties; mind 30/90-day minimum durations before early deletion.
+- name: Accountability
+  description: Assign owners per bucket/project; review storage growth and request-class burn monthly against budget.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

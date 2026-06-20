@@ -1,0 +1,89 @@
+aid: tigris-data
+name: Tigris
+review:
+  question: Does Tigris expose a documented public WebSocket or streaming API?
+  answer: false
+  date: '2026-06-20'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    Per API Evangelist scope, HTTP Server-Sent Events (SSE) and WebSocket are
+    in-scope for AsyncAPI modeling, but Tigris documents neither. Tigris is an
+    AWS S3-compatible object storage service exposing only request/response REST
+    (HTTPS) operations signed with AWS SigV4. No AsyncAPI document was created
+    because there is no documented streaming, SSE, or WebSocket surface. Tigris
+    does offer object-notification events, but these are delivered to external
+    sinks (webhooks/queues) as a configured integration, not as a client-facing
+    streaming API.
+findings:
+  summary: |
+    Tigris does not publish a documented public WebSocket or streaming API. The
+    storage surface is AWS S3-compatible REST served at https://t3.storage.dev
+    (legacy fly.storage.tigris.dev) and authenticated with AWS Signature
+    Version 4. A companion AWS IAM-compatible API is served at
+    https://iam.storage.dev and an AWS CloudFront-compatible public-key API is
+    also exposed. All documented operations are synchronous HTTPS request/
+    response calls. Object Notifications exist but are an event-delivery
+    integration to external sinks, not a client-consumed ws:// or SSE stream.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://t3.storage.dev
+      documented: true
+    - protocol: REST
+      scheme: https
+      baseURL: https://iam.storage.dev
+      documented: true
+      note: AWS IAM-compatible API for access keys and policies.
+    - protocol: SSE
+      scheme: https
+      documented: false
+      note: No Server-Sent Events endpoint is documented.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented for any Tigris product surface.
+  endpointsConfirmedRest:
+    - GET    https://t3.storage.dev/            (ListBuckets)
+    - PUT    https://t3.storage.dev/{bucket}     (CreateBucket)
+    - GET    https://t3.storage.dev/{bucket}     (ListObjectsV2)
+    - HEAD   https://t3.storage.dev/{bucket}     (HeadBucket)
+    - DELETE https://t3.storage.dev/{bucket}     (DeleteBucket)
+    - PUT    https://t3.storage.dev/{bucket}/{key}   (PutObject / CopyObject)
+    - GET    https://t3.storage.dev/{bucket}/{key}   (GetObject)
+    - HEAD   https://t3.storage.dev/{bucket}/{key}   (HeadObject)
+    - DELETE https://t3.storage.dev/{bucket}/{key}   (DeleteObject)
+    - POST   https://t3.storage.dev/{bucket}?delete   (DeleteObjects)
+    - PUT/GET/DELETE https://t3.storage.dev/{bucket}/{key}?tagging (Object Tagging)
+    - POST   https://t3.storage.dev/{bucket}/{key}?restore  (RestoreObject)
+    - POST   https://t3.storage.dev/{bucket}/{key}?uploads   (CreateMultipartUpload)
+    - PUT    https://t3.storage.dev/{bucket}/{key}?partNumber&uploadId (UploadPart / UploadPartCopy)
+    - POST   https://t3.storage.dev/{bucket}/{key}?uploadId  (CompleteMultipartUpload)
+    - GET    https://t3.storage.dev/{bucket}/{key}?uploadId  (ListParts)
+    - DELETE https://t3.storage.dev/{bucket}/{key}?uploadId  (AbortMultipartUpload)
+    - GET    https://t3.storage.dev/{bucket}?uploads  (ListMultipartUploads)
+    - POST   https://iam.storage.dev/  (CreateAccessKey / CreatePolicy / AttachUserPolicy via Action)
+sources:
+  - url: https://www.tigrisdata.com/docs/api/s3/
+    type: APIReference
+    note: S3 API compatibility matrix; all operations are AWS S3 REST. No streaming surface.
+  - url: https://www.tigrisdata.com/docs/objects/
+    type: Documentation
+    note: Object operations via S3 SDKs over HTTPS request/response.
+  - url: https://www.tigrisdata.com/docs/iam/
+    type: Documentation
+    note: AWS IAM-compatible API at https://iam.storage.dev; REST request/response.
+  - url: https://www.tigrisdata.com/docs/
+    type: Documentation
+    note: No WebSocket or SSE transport mentioned anywhere in the docs as of the review date.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket or SSE protocol surface exists. Tigris is an S3-compatible
+    object store with synchronous HTTPS REST operations only, so no AsyncAPI
+    document was authored. The OpenAPI 3.0.1 specification models the documented
+    S3-compatible REST operations with an AWS SigV4 security scheme.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

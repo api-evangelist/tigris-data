@@ -1,0 +1,219 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Tigris
+providerId: tigris-data
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: true
+tags:
+- Object Storage
+- S3 Compatible
+- Storage
+- Multi-Cloud
+- Globally Distributed
+- Plans
+description: >-
+  Tigris uses transparent, usage-based pricing with no egress fees. You pay for
+  data stored per GB-month by storage tier, for requests split into Class A
+  (PUT, COPY, POST, LIST) and Class B (GET, SELECT, and most others), and for
+  object-notification events. There are no bandwidth/egress charges for regional,
+  region-to-region, or internet data transfer out. A standing free tier covers
+  the first 5 GB of Standard storage, 10,000 Class A requests, and 100,000
+  Class B requests per month. Infrequent Access and Archive tiers add per-GB
+  data-retrieval charges and minimum storage-duration commitments.
+notes: >-
+  Rates as published on the Tigris pricing page; verify the page for current
+  numbers. Infrequent Access has a 30-day and Archive tiers a 90-day minimum
+  storage duration. DELETE and CANCEL operations are free.
+sources:
+- https://www.tigrisdata.com/pricing/
+- https://www.tigrisdata.com/docs/
+plans:
+- id: tigris-free-tier
+  name: Free Tier
+  type: free
+  description: >-
+    Standing monthly free allowance applied to every account before usage
+    charges begin.
+  entries:
+  - label: Standard Storage (free)
+    name: free_storage
+    type: free
+    metric: storage
+    limit: 5
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: first 5 GB-month free (Standard tier)
+    userMultiplied: false
+  - label: Class A Requests (free)
+    name: free_class_a
+    type: free
+    metric: requests
+    limit: 10000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: first 10,000 PUT/COPY/POST/LIST requests free
+    userMultiplied: false
+  - label: Class B Requests (free)
+    name: free_class_b
+    type: free
+    metric: requests
+    limit: 100000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: first 100,000 GET/SELECT/other requests free
+    userMultiplied: false
+  elements:
+  - name: Object Storage
+  - name: Bucket Management
+- id: tigris-pay-as-you-go
+  name: Pay-as-you-go
+  type: usage
+  description: >-
+    Usage-metered object storage with no egress fees and no monthly minimum
+    beyond consumption above the free tier.
+  entries:
+  - label: Standard Storage
+    name: storage_standard
+    type: usage
+    metric: storage
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.02 per GB-month
+    userMultiplied: false
+  - label: Infrequent Access Storage
+    name: storage_ia
+    type: usage
+    metric: storage
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.01 per GB-month (30-day minimum)
+    userMultiplied: false
+  - label: Archive Storage
+    name: storage_archive
+    type: usage
+    metric: storage
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.004 per GB-month (90-day minimum)
+    userMultiplied: false
+  - label: Archive Instant Retrieval Storage
+    name: storage_archive_ir
+    type: usage
+    metric: storage
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.004 per GB-month (90-day minimum)
+    userMultiplied: false
+  - label: Class A Requests (PUT, COPY, POST, LIST)
+    name: requests_class_a
+    type: usage
+    metric: requests
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1000
+    price: $0.005 per 1,000 requests
+    userMultiplied: false
+  - label: Class B Requests (GET, SELECT, other)
+    name: requests_class_b
+    type: usage
+    metric: requests
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1000
+    price: $0.0005 per 1,000 requests
+    userMultiplied: false
+  - label: Data Egress / Bandwidth
+    name: egress
+    type: usage
+    metric: data_transfer
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.00 - no egress fees (regional, region-to-region, or internet)
+    userMultiplied: false
+  - label: Infrequent Access Data Retrieval
+    name: retrieval_ia
+    type: usage
+    metric: data_transfer
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.01 per GB retrieved
+    userMultiplied: false
+  - label: Archive Instant Retrieval Data Retrieval
+    name: retrieval_archive_ir
+    type: usage
+    metric: data_transfer
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.03 per GB retrieved (Standard and Archive retrieval are free)
+    userMultiplied: false
+  - label: Object Notifications
+    name: object_notifications
+    type: usage
+    metric: events
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1000
+    price: $0.01 per 1,000 events
+    userMultiplied: false
+  - label: DELETE / CANCEL Operations
+    name: delete_cancel
+    type: free
+    metric: requests
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: free
+    userMultiplied: false
+  elements:
+  - name: Object Storage
+  - name: Bucket Management
+  - name: Multipart Upload
+  - name: Presigned URLs
+  - name: Object Tiering
+  - name: IAM and Access Keys
+- id: tigris-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Volume commitments, dedicated support, and negotiated terms for large-scale
+    and AI workloads. Contact Tigris sales.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Volume Pricing
+  - name: Dedicated Support
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

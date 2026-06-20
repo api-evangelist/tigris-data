@@ -1,0 +1,565 @@
+openapi: 3.0.1
+info:
+  title: Tigris Object Storage (S3-Compatible) API
+  description: >-
+    Specification of the Tigris globally distributed object storage API. Tigris
+    is compatible with the AWS S3 API, so the standard AWS S3 SDKs, tools, and
+    libraries work unchanged against the Tigris endpoint at
+    https://t3.storage.dev (the legacy host fly.storage.tigris.dev still
+    resolves). Requests are authenticated with AWS Signature Version 4 using a
+    Tigris access key id (tid_...) and secret access key (tsec_...). This
+    document models the documented, supported subset of the S3 surface: bucket
+    management, object CRUD, multipart upload, object tagging, storage-class
+    tiering, and the path-style operations that back presigned URLs. The
+    companion AWS IAM-compatible API is served at https://iam.storage.dev. Tigris
+    is region-agnostic - use region "auto".
+  termsOfService: https://www.tigrisdata.com/docs/legal/terms-of-service/
+  contact:
+    name: Tigris Support
+    url: https://www.tigrisdata.com/docs/support/
+    email: support@tigrisdata.com
+  version: '2026-06-20'
+servers:
+  - url: https://t3.storage.dev
+    description: Tigris global S3-compatible object storage endpoint (region auto)
+  - url: https://fly.storage.tigris.dev
+    description: Legacy Tigris endpoint hostname (still supported)
+security:
+  - sigv4: []
+tags:
+  - name: Buckets
+    description: S3-compatible bucket management operations.
+  - name: Objects
+    description: S3-compatible object CRUD, tagging, and tiering operations.
+  - name: Multipart
+    description: S3-compatible multipart upload operations for large objects.
+paths:
+  /:
+    get:
+      operationId: listBuckets
+      tags:
+        - Buckets
+      summary: List all buckets owned by the authenticated account (ListBuckets).
+      responses:
+        '200':
+          description: Bucket list returned as S3 XML (ListAllMyBucketsResult).
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ListAllMyBucketsResult'
+  /{bucket}:
+    parameters:
+      - $ref: '#/components/parameters/Bucket'
+    put:
+      operationId: createBucket
+      tags:
+        - Buckets
+      summary: Create a bucket (CreateBucket).
+      description: >-
+        Creates a Tigris bucket. The default storage tier and other bucket
+        settings may be provided via Tigris/S3 headers. Bucket names are global.
+      responses:
+        '200':
+          description: Bucket created.
+    get:
+      operationId: listObjectsV2
+      tags:
+        - Objects
+      summary: List objects in a bucket (ListObjectsV2 / ListObjects).
+      parameters:
+        - name: list-type
+          in: query
+          description: Set to 2 for ListObjectsV2.
+          schema:
+            type: integer
+            enum: [2]
+        - name: prefix
+          in: query
+          description: Limits the response to keys that begin with the prefix.
+          schema:
+            type: string
+        - name: delimiter
+          in: query
+          description: Groups keys sharing a common prefix into CommonPrefixes.
+          schema:
+            type: string
+        - name: continuation-token
+          in: query
+          description: Token returned by a prior truncated response for pagination.
+          schema:
+            type: string
+        - name: max-keys
+          in: query
+          description: Maximum number of keys to return.
+          schema:
+            type: integer
+        - name: encoding-type
+          in: query
+          schema:
+            type: string
+            enum: [url]
+      responses:
+        '200':
+          description: Object listing returned as S3 XML (ListBucketResult).
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ListBucketResult'
+    head:
+      operationId: headBucket
+      tags:
+        - Buckets
+      summary: Check that a bucket exists and is accessible (HeadBucket).
+      responses:
+        '200':
+          description: Bucket exists and is accessible.
+        '404':
+          description: Bucket not found.
+    delete:
+      operationId: deleteBucket
+      tags:
+        - Buckets
+      summary: Delete an empty bucket (DeleteBucket).
+      responses:
+        '204':
+          description: Bucket deleted.
+  /{bucket}/{key}:
+    parameters:
+      - $ref: '#/components/parameters/Bucket'
+      - $ref: '#/components/parameters/Key'
+    put:
+      operationId: putObject
+      tags:
+        - Objects
+      summary: Upload an object (PutObject) or copy an object (CopyObject).
+      description: >-
+        Stores an object. Supply x-amz-storage-class to set the tier
+        (STANDARD, STANDARD_IA, GLACIER, GLACIER_IR). Provide
+        x-amz-copy-source to perform a server-side CopyObject instead of a body
+        upload. Custom metadata (x-amz-meta-*) and SHA256 checksums are
+        supported.
+      parameters:
+        - name: x-amz-storage-class
+          in: header
+          description: Storage tier - STANDARD, STANDARD_IA, GLACIER, or GLACIER_IR.
+          schema:
+            type: string
+            enum: [STANDARD, STANDARD_IA, GLACIER, GLACIER_IR]
+        - name: x-amz-copy-source
+          in: header
+          description: Source "/bucket/key" for a server-side copy (CopyObject).
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+      requestBody:
+        description: Raw object bytes (omit for a CopyObject).
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: Object stored (or copied). ETag returned in the header.
+    get:
+      operationId: getObject
+      tags:
+        - Objects
+      summary: Download an object (GetObject), optionally ranged or conditional.
+      parameters:
+        - name: Range
+          in: header
+          description: Byte range to retrieve, e.g. "bytes=0-1023".
+          schema:
+            type: string
+        - name: If-Match
+          in: header
+          schema:
+            type: string
+        - name: If-None-Match
+          in: header
+          schema:
+            type: string
+        - name: If-Modified-Since
+          in: header
+          schema:
+            type: string
+        - name: If-Unmodified-Since
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Object body returned.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '206':
+          description: Partial object body returned for a ranged request.
+        '304':
+          description: Not modified (conditional request).
+        '404':
+          description: Object not found.
+    head:
+      operationId: headObject
+      tags:
+        - Objects
+      summary: Retrieve object metadata without the body (HeadObject).
+      responses:
+        '200':
+          description: Object metadata returned in headers.
+        '404':
+          description: Object not found.
+    delete:
+      operationId: deleteObject
+      tags:
+        - Objects
+      summary: Delete an object (DeleteObject).
+      responses:
+        '204':
+          description: Object deleted.
+  /{bucket}/{key}#tagging:
+    parameters:
+      - $ref: '#/components/parameters/Bucket'
+      - $ref: '#/components/parameters/Key'
+    put:
+      operationId: putObjectTagging
+      tags:
+        - Objects
+      summary: Set the tag set on an object (PutObjectTagging).
+      description: Operates on the object's ?tagging subresource.
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Tagging'
+      responses:
+        '200':
+          description: Tag set applied.
+    get:
+      operationId: getObjectTagging
+      tags:
+        - Objects
+      summary: Retrieve the tag set on an object (GetObjectTagging).
+      responses:
+        '200':
+          description: Tag set returned.
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Tagging'
+    delete:
+      operationId: deleteObjectTagging
+      tags:
+        - Objects
+      summary: Remove the tag set from an object (DeleteObjectTagging).
+      responses:
+        '204':
+          description: Tag set removed.
+  /{bucket}#delete:
+    parameters:
+      - $ref: '#/components/parameters/Bucket'
+    post:
+      operationId: deleteObjects
+      tags:
+        - Objects
+      summary: Delete multiple objects in one request (DeleteObjects).
+      description: Operates on the bucket ?delete subresource. Supports quiet mode.
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Delete'
+      responses:
+        '200':
+          description: Per-key delete results returned as S3 XML.
+  /{bucket}/{key}#restore:
+    parameters:
+      - $ref: '#/components/parameters/Bucket'
+      - $ref: '#/components/parameters/Key'
+    post:
+      operationId: restoreObject
+      tags:
+        - Objects
+      summary: Restore an archived (GLACIER) object (RestoreObject).
+      description: >-
+        Restores an object stored in the Archive tier so it becomes
+        retrievable. Operates on the object ?restore subresource.
+      responses:
+        '202':
+          description: Restore request accepted.
+        '200':
+          description: Restore already in progress or completed.
+  /{bucket}/{key}#uploads:
+    parameters:
+      - $ref: '#/components/parameters/Bucket'
+      - $ref: '#/components/parameters/Key'
+    post:
+      operationId: createMultipartUpload
+      tags:
+        - Multipart
+      summary: Initiate a multipart upload (CreateMultipartUpload).
+      description: Operates on the object ?uploads subresource and returns an UploadId.
+      parameters:
+        - name: x-amz-storage-class
+          in: header
+          schema:
+            type: string
+            enum: [STANDARD, STANDARD_IA, GLACIER, GLACIER_IR]
+      responses:
+        '200':
+          description: Multipart upload initiated; UploadId returned.
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/InitiateMultipartUploadResult'
+  /{bucket}/{key}#partNumber:
+    parameters:
+      - $ref: '#/components/parameters/Bucket'
+      - $ref: '#/components/parameters/Key'
+    put:
+      operationId: uploadPart
+      tags:
+        - Multipart
+      summary: Upload one part of a multipart upload (UploadPart / UploadPartCopy).
+      parameters:
+        - name: partNumber
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: uploadId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: x-amz-copy-source
+          in: header
+          description: Source for an UploadPartCopy.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: Part stored; ETag returned for use in CompleteMultipartUpload.
+  /{bucket}/{key}#complete:
+    parameters:
+      - $ref: '#/components/parameters/Bucket'
+      - $ref: '#/components/parameters/Key'
+    post:
+      operationId: completeMultipartUpload
+      tags:
+        - Multipart
+      summary: Complete a multipart upload (CompleteMultipartUpload).
+      parameters:
+        - name: uploadId
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/CompleteMultipartUpload'
+      responses:
+        '200':
+          description: Upload assembled into a single object.
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CompleteMultipartUploadResult'
+    get:
+      operationId: listParts
+      tags:
+        - Multipart
+      summary: List the uploaded parts of a multipart upload (ListParts).
+      parameters:
+        - name: uploadId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Parts listing returned as S3 XML.
+    delete:
+      operationId: abortMultipartUpload
+      tags:
+        - Multipart
+      summary: Abort a multipart upload and discard its parts (AbortMultipartUpload).
+      parameters:
+        - name: uploadId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Multipart upload aborted.
+  /{bucket}#uploads:
+    parameters:
+      - $ref: '#/components/parameters/Bucket'
+    get:
+      operationId: listMultipartUploads
+      tags:
+        - Multipart
+      summary: List in-progress multipart uploads in a bucket (ListMultipartUploads).
+      responses:
+        '200':
+          description: In-progress multipart uploads returned as S3 XML.
+components:
+  securitySchemes:
+    sigv4:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: >-
+        AWS Signature Version 4 request signing. Clients sign each request with a
+        Tigris access key id (AWS_ACCESS_KEY_ID=tid_...) and secret access key
+        (AWS_SECRET_ACCESS_KEY=tsec_...); the signature is carried in the
+        standard Authorization header (or query string for presigned URLs). Use
+        service name "s3" and region "auto". Any AWS SDK / SigV4 signer produces
+        a compatible signature.
+  parameters:
+    Bucket:
+      name: bucket
+      in: path
+      required: true
+      description: Bucket name (also usable as a virtual-host subdomain of t3.storage.dev).
+      schema:
+        type: string
+    Key:
+      name: key
+      in: path
+      required: true
+      description: Object key. May contain slashes to emulate a directory hierarchy.
+      schema:
+        type: string
+  schemas:
+    ListAllMyBucketsResult:
+      type: object
+      properties:
+        Buckets:
+          type: array
+          items:
+            type: object
+            properties:
+              Name:
+                type: string
+              CreationDate:
+                type: string
+                format: date-time
+    ListBucketResult:
+      type: object
+      properties:
+        Name:
+          type: string
+        Prefix:
+          type: string
+        KeyCount:
+          type: integer
+        MaxKeys:
+          type: integer
+        IsTruncated:
+          type: boolean
+        NextContinuationToken:
+          type: string
+        Contents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Object'
+        CommonPrefixes:
+          type: array
+          items:
+            type: object
+            properties:
+              Prefix:
+                type: string
+    Object:
+      type: object
+      properties:
+        Key:
+          type: string
+        LastModified:
+          type: string
+          format: date-time
+        ETag:
+          type: string
+        Size:
+          type: integer
+          format: int64
+        StorageClass:
+          type: string
+          enum: [STANDARD, STANDARD_IA, GLACIER, GLACIER_IR]
+    Tagging:
+      type: object
+      properties:
+        TagSet:
+          type: array
+          items:
+            type: object
+            properties:
+              Key:
+                type: string
+              Value:
+                type: string
+    Delete:
+      type: object
+      properties:
+        Quiet:
+          type: boolean
+        Objects:
+          type: array
+          items:
+            type: object
+            properties:
+              Key:
+                type: string
+              VersionId:
+                type: string
+    InitiateMultipartUploadResult:
+      type: object
+      properties:
+        Bucket:
+          type: string
+        Key:
+          type: string
+        UploadId:
+          type: string
+    CompleteMultipartUpload:
+      type: object
+      properties:
+        Parts:
+          type: array
+          items:
+            type: object
+            properties:
+              PartNumber:
+                type: integer
+              ETag:
+                type: string
+    CompleteMultipartUploadResult:
+      type: object
+      properties:
+        Location:
+          type: string
+        Bucket:
+          type: string
+        Key:
+          type: string
+        ETag:
+          type: string

@@ -1,0 +1,130 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tigris Object Storage (S3-Compatible) API",
+    "version": "2026-06-20"
+  },
+  "request": {
+    "auth": {
+      "type": "awsv4",
+      "awsv4": {
+        "service": "s3",
+        "region": "auto",
+        "accessKey": "{{accessKey}}",
+        "secretKey": "{{secretKey}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Buckets", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "ListBuckets", "type": "http" },
+          "http": { "method": "GET", "url": "https://t3.storage.dev/" },
+          "docs": "List all buckets owned by the authenticated account."
+        },
+        {
+          "info": { "name": "CreateBucket", "type": "http" },
+          "http": { "method": "PUT", "url": "https://t3.storage.dev/{{bucket}}" },
+          "docs": "Create a bucket."
+        },
+        {
+          "info": { "name": "ListObjectsV2", "type": "http" },
+          "http": { "method": "GET", "url": "https://t3.storage.dev/{{bucket}}?list-type=2" },
+          "docs": "List objects in a bucket."
+        },
+        {
+          "info": { "name": "HeadBucket", "type": "http" },
+          "http": { "method": "HEAD", "url": "https://t3.storage.dev/{{bucket}}" },
+          "docs": "Check that a bucket exists and is accessible."
+        },
+        {
+          "info": { "name": "DeleteBucket", "type": "http" },
+          "http": { "method": "DELETE", "url": "https://t3.storage.dev/{{bucket}}" },
+          "docs": "Delete an empty bucket."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Objects", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "PutObject", "type": "http" },
+          "http": { "method": "PUT", "url": "https://t3.storage.dev/{{bucket}}/{{key}}", "body": { "type": "binary", "data": "" } },
+          "docs": "Upload an object. Use the x-amz-storage-class header to choose a tier (STANDARD, STANDARD_IA, GLACIER, GLACIER_IR)."
+        },
+        {
+          "info": { "name": "GetObject", "type": "http" },
+          "http": { "method": "GET", "url": "https://t3.storage.dev/{{bucket}}/{{key}}" },
+          "docs": "Download an object. Add a Range header for partial reads."
+        },
+        {
+          "info": { "name": "HeadObject", "type": "http" },
+          "http": { "method": "HEAD", "url": "https://t3.storage.dev/{{bucket}}/{{key}}" },
+          "docs": "Retrieve object metadata without the body."
+        },
+        {
+          "info": { "name": "CopyObject", "type": "http" },
+          "http": { "method": "PUT", "url": "https://t3.storage.dev/{{bucket}}/{{key}}" },
+          "docs": "Server-side copy using the x-amz-copy-source header."
+        },
+        {
+          "info": { "name": "DeleteObject", "type": "http" },
+          "http": { "method": "DELETE", "url": "https://t3.storage.dev/{{bucket}}/{{key}}" },
+          "docs": "Delete an object."
+        },
+        {
+          "info": { "name": "DeleteObjects", "type": "http" },
+          "http": { "method": "POST", "url": "https://t3.storage.dev/{{bucket}}?delete", "body": { "type": "xml", "data": "<Delete><Object><Key>a.txt</Key></Object></Delete>" } },
+          "docs": "Delete multiple objects in a single request."
+        },
+        {
+          "info": { "name": "PutObjectTagging", "type": "http" },
+          "http": { "method": "PUT", "url": "https://t3.storage.dev/{{bucket}}/{{key}}?tagging", "body": { "type": "xml", "data": "<Tagging><TagSet><Tag><Key>env</Key><Value>prod</Value></Tag></TagSet></Tagging>" } },
+          "docs": "Set the tag set on an object."
+        },
+        {
+          "info": { "name": "RestoreObject", "type": "http" },
+          "http": { "method": "POST", "url": "https://t3.storage.dev/{{bucket}}/{{key}}?restore" },
+          "docs": "Restore an object stored in the Archive (GLACIER) tier."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Multipart", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "CreateMultipartUpload", "type": "http" },
+          "http": { "method": "POST", "url": "https://t3.storage.dev/{{bucket}}/{{key}}?uploads" },
+          "docs": "Initiate a multipart upload; returns an UploadId."
+        },
+        {
+          "info": { "name": "UploadPart", "type": "http" },
+          "http": { "method": "PUT", "url": "https://t3.storage.dev/{{bucket}}/{{key}}?partNumber=1&uploadId={{uploadId}}", "body": { "type": "binary", "data": "" } },
+          "docs": "Upload one part of a multipart upload."
+        },
+        {
+          "info": { "name": "CompleteMultipartUpload", "type": "http" },
+          "http": { "method": "POST", "url": "https://t3.storage.dev/{{bucket}}/{{key}}?uploadId={{uploadId}}", "body": { "type": "xml", "data": "<CompleteMultipartUpload><Part><PartNumber>1</PartNumber><ETag>\"etag\"</ETag></Part></CompleteMultipartUpload>" } },
+          "docs": "Complete a multipart upload, assembling the parts into one object."
+        },
+        {
+          "info": { "name": "ListParts", "type": "http" },
+          "http": { "method": "GET", "url": "https://t3.storage.dev/{{bucket}}/{{key}}?uploadId={{uploadId}}" },
+          "docs": "List the uploaded parts of a multipart upload."
+        },
+        {
+          "info": { "name": "AbortMultipartUpload", "type": "http" },
+          "http": { "method": "DELETE", "url": "https://t3.storage.dev/{{bucket}}/{{key}}?uploadId={{uploadId}}" },
+          "docs": "Abort a multipart upload and discard its parts."
+        },
+        {
+          "info": { "name": "ListMultipartUploads", "type": "http" },
+          "http": { "method": "GET", "url": "https://t3.storage.dev/{{bucket}}?uploads" },
+          "docs": "List in-progress multipart uploads in a bucket."
+        }
+      ]
+    }
+  ]
+}

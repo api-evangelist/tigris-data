@@ -1,0 +1,63 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Tigris
+providerId: tigris-data
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- Object Storage
+- S3 Compatible
+- Storage
+- Multi-Cloud
+- Globally Distributed
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Tigris is S3-compatible and applies request throttling consistent with the S3
+  protocol rather than fixed per-minute quotas. When a client exceeds the rate
+  the service can sustain for a given key prefix it returns HTTP 503 SlowDown
+  (and 429 for some control-plane operations); clients should retry with
+  exponential backoff and jitter, which the AWS SDKs do automatically. Tigris
+  scales request capacity automatically as traffic ramps and recommends
+  spreading high-throughput workloads across key prefixes. Specific numeric
+  per-account limits are not publicly documented and are not reconciled here.
+notes: >-
+  Verify any account-specific limits and large-scale throughput guidance with
+  Tigris support during reconciliation. Spreading keys across prefixes and using
+  multipart upload for large objects improves sustained throughput.
+sources:
+- https://www.tigrisdata.com/docs/
+- https://www.tigrisdata.com/docs/api/s3/
+- https://www.tigrisdata.com/docs/support/
+responseCodes:
+  throttled: 503
+  throttledAlt: 429
+limits:
+- name: Request Throttling (SlowDown)
+  scope: account
+  metric: requests
+  limit: see provider documentation
+  notes: S3-style 503 SlowDown when a key prefix is driven beyond sustainable throughput; capacity scales automatically.
+- name: Control-Plane Throttling
+  scope: account
+  metric: requests
+  limit: see provider documentation
+  notes: IAM and bucket/account management operations may return 429 under burst; back off and retry.
+- name: Object Size
+  scope: object
+  metric: bytes
+  limit: use multipart upload for large objects
+  notes: Use CreateMultipartUpload/UploadPart for large objects; single PutObject is bounded by the S3 single-request object size.
+policies:
+- name: Backoff Strategy
+  description: Implement exponential backoff with jitter and honor Retry-After; the AWS SDKs do this by default.
+- name: Prefix Distribution
+  description: Spread high-throughput keys across multiple prefixes so request capacity scales across partitions.
+- name: Automatic Scaling
+  description: Tigris scales request capacity as sustained traffic increases; ramp gradually for very high request rates.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

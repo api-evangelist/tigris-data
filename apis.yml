@@ -1,0 +1,183 @@
+aid: tigris-data
+url: https://raw.githubusercontent.com/api-evangelist/tigris-data/refs/heads/main/apis.yml
+name: Tigris
+kind: company
+description: Tigris is a globally distributed, multi-cloud, S3-compatible object
+  storage service. Data is automatically placed close to where it is read for low
+  latency worldwide, with no egress fees. The storage API speaks the AWS S3 protocol
+  at https://t3.storage.dev (formerly fly.storage.tigris.dev) so existing boto3,
+  AWS SDK, and S3 clients work unchanged, with companion IAM and CloudFront-compatible
+  APIs for access keys and public-key signing.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Object Storage
+- S3 Compatible
+- Storage
+- Multi-Cloud
+- Globally Distributed
+created: '2026-06-20'
+modified: '2026-06-20'
+specificationVersion: '0.19'
+apis:
+- aid: tigris-data:object-storage-s3-compatible-api
+  name: Tigris Object Storage (S3-Compatible) API
+  tags:
+  - Object Storage
+  - S3 Compatible
+  - Objects
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.tigrisdata.com/docs/api/s3/
+  baseURL: https://t3.storage.dev
+  properties:
+  - url: https://www.tigrisdata.com/docs/objects/
+    type: Documentation
+  - url: https://www.tigrisdata.com/docs/api/s3/
+    type: APIReference
+  - url: openapi/tigris-data-openapi.yml
+    type: OpenAPI
+  - url: collections/tigris-data.postman_collection.json
+    type: PostmanCollection
+  - url: collections/tigris-data.opencollection.json
+    type: OpenCollection
+  description: AWS S3-compatible object operations - PutObject, GetObject,
+    HeadObject, CopyObject, DeleteObject, DeleteObjects, ListObjectsV2, object
+    tagging, ranged and conditional reads, and storage-class tiering - served at
+    https://t3.storage.dev and authenticated with AWS Signature Version 4.
+- aid: tigris-data:bucket-management-api
+  name: Tigris Bucket Management API
+  tags:
+  - Buckets
+  - S3 Compatible
+  - Management
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.tigrisdata.com/docs/buckets/
+  baseURL: https://t3.storage.dev
+  properties:
+  - url: https://www.tigrisdata.com/docs/buckets/
+    type: Documentation
+  - url: https://www.tigrisdata.com/docs/api/s3/
+    type: APIReference
+  - url: openapi/tigris-data-openapi.yml
+    type: OpenAPI
+  - url: collections/tigris-data.postman_collection.json
+    type: PostmanCollection
+  - url: collections/tigris-data.opencollection.json
+    type: OpenCollection
+  description: S3-compatible bucket lifecycle and configuration - CreateBucket,
+    ListBuckets, HeadBucket, DeleteBucket, plus CORS, lifecycle, tagging,
+    ownership controls, notification configuration, and ACL settings on Tigris
+    buckets.
+- aid: tigris-data:multipart-upload-api
+  name: Tigris Multipart Upload API
+  tags:
+  - Multipart
+  - Uploads
+  - Large Objects
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.tigrisdata.com/docs/objects/
+  baseURL: https://t3.storage.dev
+  properties:
+  - url: https://www.tigrisdata.com/docs/objects/
+    type: Documentation
+  - url: https://www.tigrisdata.com/docs/api/s3/
+    type: APIReference
+  - url: openapi/tigris-data-openapi.yml
+    type: OpenAPI
+  - url: collections/tigris-data.postman_collection.json
+    type: PostmanCollection
+  - url: collections/tigris-data.opencollection.json
+    type: OpenCollection
+  description: S3-compatible multipart upload flow for large objects -
+    CreateMultipartUpload, UploadPart, UploadPartCopy, ListParts,
+    ListMultipartUploads, CompleteMultipartUpload, and AbortMultipartUpload.
+- aid: tigris-data:presigned-urls-api
+  name: Tigris Presigned URLs API
+  tags:
+  - Presigned URLs
+  - Temporary Access
+  - S3 Compatible
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.tigrisdata.com/docs/objects/presigned-urls/
+  baseURL: https://t3.storage.dev
+  properties:
+  - url: https://www.tigrisdata.com/docs/objects/presigned-urls/
+    type: Documentation
+  - url: https://www.tigrisdata.com/docs/api/s3/
+    type: APIReference
+  - url: openapi/tigris-data-openapi.yml
+    type: OpenAPI
+  - url: collections/tigris-data.postman_collection.json
+    type: PostmanCollection
+  - url: collections/tigris-data.opencollection.json
+    type: OpenCollection
+  description: SigV4 presigned URLs for time-limited, credential-free object
+    access - PresignGetObject, PresignPutObject, PresignHeadObject,
+    PresignDeleteObject, and PresignUploadPart.
+- aid: tigris-data:iam-access-keys-api
+  name: Tigris IAM and Access Keys API
+  tags:
+  - IAM
+  - Access Keys
+  - Policies
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.tigrisdata.com/docs/iam/
+  baseURL: https://iam.storage.dev
+  properties:
+  - url: https://www.tigrisdata.com/docs/iam/
+    type: Documentation
+  - url: https://www.tigrisdata.com/docs/api/s3/
+    type: APIReference
+  - url: openapi/tigris-data-openapi.yml
+    type: OpenAPI
+  - url: collections/tigris-data.postman_collection.json
+    type: PostmanCollection
+  - url: collections/tigris-data.opencollection.json
+    type: OpenCollection
+  description: AWS IAM-compatible API served at https://iam.storage.dev for
+    managing access keys and policies - CreateAccessKey, ListAccessKeys,
+    UpdateAccessKey, DeleteAccessKey, CreatePolicy, GetPolicy, ListPolicies,
+    DeletePolicy, AttachUserPolicy, DetachUserPolicy, and ListUserPolicies.
+    Tigris IAM uses policies attached directly to access keys rather than IAM
+    users, groups, or roles.
+- aid: tigris-data:object-tiering-api
+  name: Tigris Object Tiering API
+  tags:
+  - Storage Tiers
+  - Lifecycle
+  - Cost Optimization
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.tigrisdata.com/docs/objects/tiers/
+  baseURL: https://t3.storage.dev
+  properties:
+  - url: https://www.tigrisdata.com/docs/objects/tiers/
+    type: Documentation
+  - url: https://www.tigrisdata.com/docs/api/s3/
+    type: APIReference
+  - url: openapi/tigris-data-openapi.yml
+    type: OpenAPI
+  - url: collections/tigris-data.postman_collection.json
+    type: PostmanCollection
+  - url: collections/tigris-data.opencollection.json
+    type: OpenCollection
+  description: Storage-class tiering using S3-compatible classes - STANDARD,
+    STANDARD_IA (Infrequent Access), GLACIER (Archive), and GLACIER_IR (Archive
+    Instant Retrieval) - set per bucket default or per object via the
+    x-amz-storage-class header, with RestoreObject to restore archived objects.
+common:
+- type: GitHubOrganization
+  url: https://github.com/tigrisdata
+- type: LinkedIn
+  url: https://www.linkedin.com/company/tigrisdata
+- type: Website
+  url: https://www.tigrisdata.com
+- type: Documentation
+  url: https://www.tigrisdata.com/docs/
+- type: Plans
+  url: plans/tigris-data-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/tigris-data-rate-limits.yml
+- type: FinOps
+  url: finops/tigris-data-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
