@@ -164,6 +164,12 @@ apis:
     Instant Retrieval) - set per bucket default or per object via the
     x-amz-storage-class header, with RestoreObject to restore archived objects.
 common:
+- type: TrustCenter
+  url: security/tigris-data-trust-center.yml
+- type: DomainSecurity
+  url: security/tigris-data-domain-security.yml
+- type: Authentication
+  url: authentication/tigris-data-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/tigrisdata
 - type: LinkedIn
@@ -178,6 +184,8 @@ common:
   url: rate-limits/tigris-data-rate-limits.yml
 - type: FinOps
   url: finops/tigris-data-finops.yml
+- url: https://www.tigrisdata.com/blog/rss.xml
+  type: Blog
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

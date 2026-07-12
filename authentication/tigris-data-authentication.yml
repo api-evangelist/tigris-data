@@ -1,0 +1,20 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/tigris-data-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: sigv4
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: AWS Signature Version 4 request signing. Clients sign each request with a Tigris
+    access key id (AWS_ACCESS_KEY_ID=tid_...) and secret access key (AWS_SECRET_ACCESS_KEY=tsec_...);
+    the signature is carried in the standard Authorization header (or query string for presigned
+    URLs). Use service name "s3" and region "auto". Any AWS SDK / SigV4 signer produces a compatible
+    signature.
+  sources:
+  - openapi/tigris-data-openapi.yml
