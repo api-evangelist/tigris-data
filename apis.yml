@@ -164,6 +164,8 @@ apis:
     Instant Retrieval) - set per bucket default or per object via the
     x-amz-storage-class header, with RestoreObject to restore archived objects.
 common:
+- type: AgenticAccess
+  url: agentic-access/tigris-data-agentic-access.yml
 - type: TrustCenter
   url: security/tigris-data-trust-center.yml
 - type: DomainSecurity
