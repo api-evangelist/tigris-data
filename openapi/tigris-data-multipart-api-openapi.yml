@@ -1,0 +1,204 @@
+openapi: 3.0.1
+info:
+  title: Tigris Object Storage (S3-Compatible) Buckets Multipart API
+  description: 'Specification of the Tigris globally distributed object storage API. Tigris is compatible with the AWS S3 API, so the standard AWS S3 SDKs, tools, and libraries work unchanged against the Tigris endpoint at https://t3.storage.dev (the legacy host fly.storage.tigris.dev still resolves). Requests are authenticated with AWS Signature Version 4 using a Tigris access key id (tid_...) and secret access key (tsec_...). This document models the documented, supported subset of the S3 surface: bucket management, object CRUD, multipart upload, object tagging, storage-class tiering, and the path-style operations that back presigned URLs. The companion AWS IAM-compatible API is served at https://iam.storage.dev. Tigris is region-agnostic - use region "auto".'
+  termsOfService: https://www.tigrisdata.com/docs/legal/terms-of-service/
+  contact:
+    name: Tigris Support
+    url: https://www.tigrisdata.com/docs/support/
+    email: support@tigrisdata.com
+  version: '2026-06-20'
+servers:
+- url: https://t3.storage.dev
+  description: Tigris global S3-compatible object storage endpoint (region auto)
+- url: https://fly.storage.tigris.dev
+  description: Legacy Tigris endpoint hostname (still supported)
+security:
+- sigv4: []
+tags:
+- name: Multipart
+  description: S3-compatible multipart upload operations for large objects.
+paths:
+  /{bucket}/{key}#uploads:
+    parameters:
+    - $ref: '#/components/parameters/Bucket'
+    - $ref: '#/components/parameters/Key'
+    post:
+      operationId: createMultipartUpload
+      tags:
+      - Multipart
+      summary: Initiate a multipart upload (CreateMultipartUpload).
+      description: Operates on the object ?uploads subresource and returns an UploadId.
+      parameters:
+      - name: x-amz-storage-class
+        in: header
+        schema:
+          type: string
+          enum:
+          - STANDARD
+          - STANDARD_IA
+          - GLACIER
+          - GLACIER_IR
+      responses:
+        '200':
+          description: Multipart upload initiated; UploadId returned.
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/InitiateMultipartUploadResult'
+  /{bucket}/{key}#partNumber:
+    parameters:
+    - $ref: '#/components/parameters/Bucket'
+    - $ref: '#/components/parameters/Key'
+    put:
+      operationId: uploadPart
+      tags:
+      - Multipart
+      summary: Upload one part of a multipart upload (UploadPart / UploadPartCopy).
+      parameters:
+      - name: partNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+      - name: uploadId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: x-amz-copy-source
+        in: header
+        description: Source for an UploadPartCopy.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: Part stored; ETag returned for use in CompleteMultipartUpload.
+  /{bucket}/{key}#complete:
+    parameters:
+    - $ref: '#/components/parameters/Bucket'
+    - $ref: '#/components/parameters/Key'
+    post:
+      operationId: completeMultipartUpload
+      tags:
+      - Multipart
+      summary: Complete a multipart upload (CompleteMultipartUpload).
+      parameters:
+      - name: uploadId
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/CompleteMultipartUpload'
+      responses:
+        '200':
+          description: Upload assembled into a single object.
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CompleteMultipartUploadResult'
+    get:
+      operationId: listParts
+      tags:
+      - Multipart
+      summary: List the uploaded parts of a multipart upload (ListParts).
+      parameters:
+      - name: uploadId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Parts listing returned as S3 XML.
+    delete:
+      operationId: abortMultipartUpload
+      tags:
+      - Multipart
+      summary: Abort a multipart upload and discard its parts (AbortMultipartUpload).
+      parameters:
+      - name: uploadId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Multipart upload aborted.
+  /{bucket}#uploads:
+    parameters:
+    - $ref: '#/components/parameters/Bucket'
+    get:
+      operationId: listMultipartUploads
+      tags:
+      - Multipart
+      summary: List in-progress multipart uploads in a bucket (ListMultipartUploads).
+      responses:
+        '200':
+          description: In-progress multipart uploads returned as S3 XML.
+components:
+  schemas:
+    CompleteMultipartUpload:
+      type: object
+      properties:
+        Parts:
+          type: array
+          items:
+            type: object
+            properties:
+              PartNumber:
+                type: integer
+              ETag:
+                type: string
+    InitiateMultipartUploadResult:
+      type: object
+      properties:
+        Bucket:
+          type: string
+        Key:
+          type: string
+        UploadId:
+          type: string
+    CompleteMultipartUploadResult:
+      type: object
+      properties:
+        Location:
+          type: string
+        Bucket:
+          type: string
+        Key:
+          type: string
+        ETag:
+          type: string
+  parameters:
+    Key:
+      name: key
+      in: path
+      required: true
+      description: Object key. May contain slashes to emulate a directory hierarchy.
+      schema:
+        type: string
+    Bucket:
+      name: bucket
+      in: path
+      required: true
+      description: Bucket name (also usable as a virtual-host subdomain of t3.storage.dev).
+      schema:
+        type: string
+  securitySchemes:
+    sigv4:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: AWS Signature Version 4 request signing. Clients sign each request with a Tigris access key id (AWS_ACCESS_KEY_ID=tid_...) and secret access key (AWS_SECRET_ACCESS_KEY=tsec_...); the signature is carried in the standard Authorization header (or query string for presigned URLs). Use service name "s3" and region "auto". Any AWS SDK / SigV4 signer produces a compatible signature.

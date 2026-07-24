@@ -1,0 +1,93 @@
+openapi: 3.0.1
+info:
+  title: Tigris Object Storage (S3-Compatible) Buckets API
+  description: 'Specification of the Tigris globally distributed object storage API. Tigris is compatible with the AWS S3 API, so the standard AWS S3 SDKs, tools, and libraries work unchanged against the Tigris endpoint at https://t3.storage.dev (the legacy host fly.storage.tigris.dev still resolves). Requests are authenticated with AWS Signature Version 4 using a Tigris access key id (tid_...) and secret access key (tsec_...). This document models the documented, supported subset of the S3 surface: bucket management, object CRUD, multipart upload, object tagging, storage-class tiering, and the path-style operations that back presigned URLs. The companion AWS IAM-compatible API is served at https://iam.storage.dev. Tigris is region-agnostic - use region "auto".'
+  termsOfService: https://www.tigrisdata.com/docs/legal/terms-of-service/
+  contact:
+    name: Tigris Support
+    url: https://www.tigrisdata.com/docs/support/
+    email: support@tigrisdata.com
+  version: '2026-06-20'
+servers:
+- url: https://t3.storage.dev
+  description: Tigris global S3-compatible object storage endpoint (region auto)
+- url: https://fly.storage.tigris.dev
+  description: Legacy Tigris endpoint hostname (still supported)
+security:
+- sigv4: []
+tags:
+- name: Buckets
+  description: S3-compatible bucket management operations.
+paths:
+  /:
+    get:
+      operationId: listBuckets
+      tags:
+      - Buckets
+      summary: List all buckets owned by the authenticated account (ListBuckets).
+      responses:
+        '200':
+          description: Bucket list returned as S3 XML (ListAllMyBucketsResult).
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ListAllMyBucketsResult'
+  /{bucket}:
+    parameters:
+    - $ref: '#/components/parameters/Bucket'
+    put:
+      operationId: createBucket
+      tags:
+      - Buckets
+      summary: Create a bucket (CreateBucket).
+      description: Creates a Tigris bucket. The default storage tier and other bucket settings may be provided via Tigris/S3 headers. Bucket names are global.
+      responses:
+        '200':
+          description: Bucket created.
+    head:
+      operationId: headBucket
+      tags:
+      - Buckets
+      summary: Check that a bucket exists and is accessible (HeadBucket).
+      responses:
+        '200':
+          description: Bucket exists and is accessible.
+        '404':
+          description: Bucket not found.
+    delete:
+      operationId: deleteBucket
+      tags:
+      - Buckets
+      summary: Delete an empty bucket (DeleteBucket).
+      responses:
+        '204':
+          description: Bucket deleted.
+components:
+  schemas:
+    ListAllMyBucketsResult:
+      type: object
+      properties:
+        Buckets:
+          type: array
+          items:
+            type: object
+            properties:
+              Name:
+                type: string
+              CreationDate:
+                type: string
+                format: date-time
+  parameters:
+    Bucket:
+      name: bucket
+      in: path
+      required: true
+      description: Bucket name (also usable as a virtual-host subdomain of t3.storage.dev).
+      schema:
+        type: string
+  securitySchemes:
+    sigv4:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: AWS Signature Version 4 request signing. Clients sign each request with a Tigris access key id (AWS_ACCESS_KEY_ID=tid_...) and secret access key (AWS_SECRET_ACCESS_KEY=tsec_...); the signature is carried in the standard Authorization header (or query string for presigned URLs). Use service name "s3" and region "auto". Any AWS SDK / SigV4 signer produces a compatible signature.
