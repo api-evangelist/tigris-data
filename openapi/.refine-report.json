@@ -1,0 +1,18 @@
+{
+  "provider": "tigris-data",
+  "sources": [
+    "tigris-data-buckets-api-openapi.yml",
+    "tigris-data-multipart-api-openapi.yml",
+    "tigris-data-objects-api-openapi.yml"
+  ],
+  "outputs": [
+    "tigris-data-buckets-api-openapi.yml",
+    "tigris-data-multipart-api-openapi.yml",
+    "tigris-data-objects-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
