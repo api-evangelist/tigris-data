@@ -1,0 +1,207 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tigris Object Storage (S3-Compatible) Buckets Multipart API",
+    "version": "2026-06-20"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Multipart",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Initiate a multipart upload (CreateMultipartUpload).",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://t3.storage.dev/:bucket/:key#uploads",
+            "headers": [
+              {
+                "name": "x-amz-storage-class",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "Object key. May contain slashes to emulate a directory hierarchy."
+              }
+            ]
+          },
+          "docs": "Operates on the object ?uploads subresource and returns an UploadId."
+        },
+        {
+          "info": {
+            "name": "Upload one part of a multipart upload (UploadPart / UploadPartCopy).",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://t3.storage.dev/:bucket/:key#partNumber",
+            "headers": [
+              {
+                "name": "x-amz-copy-source",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "Object key. May contain slashes to emulate a directory hierarchy."
+              },
+              {
+                "name": "partNumber",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "uploadId",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Upload one part of a multipart upload (UploadPart / UploadPartCopy)."
+        },
+        {
+          "info": {
+            "name": "List the uploaded parts of a multipart upload (ListParts).",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://t3.storage.dev/:bucket/:key#complete",
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "Object key. May contain slashes to emulate a directory hierarchy."
+              },
+              {
+                "name": "uploadId",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List the uploaded parts of a multipart upload (ListParts)."
+        },
+        {
+          "info": {
+            "name": "Complete a multipart upload (CompleteMultipartUpload).",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://t3.storage.dev/:bucket/:key#complete",
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "Object key. May contain slashes to emulate a directory hierarchy."
+              },
+              {
+                "name": "uploadId",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Complete a multipart upload (CompleteMultipartUpload)."
+        },
+        {
+          "info": {
+            "name": "Abort a multipart upload and discard its parts (AbortMultipartUpload).",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://t3.storage.dev/:bucket/:key#complete",
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "Object key. May contain slashes to emulate a directory hierarchy."
+              },
+              {
+                "name": "uploadId",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Abort a multipart upload and discard its parts (AbortMultipartUpload)."
+        },
+        {
+          "info": {
+            "name": "List in-progress multipart uploads in a bucket (ListMultipartUploads).",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://t3.storage.dev/:bucket#uploads",
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              }
+            ]
+          },
+          "docs": "List in-progress multipart uploads in a bucket (ListMultipartUploads)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

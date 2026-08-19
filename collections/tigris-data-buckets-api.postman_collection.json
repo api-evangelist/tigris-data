@@ -1,0 +1,417 @@
+{
+  "item": [
+    {
+      "id": "7ffa7972-05da-4f7a-8a7e-fd7da34dd73b",
+      "name": "Buckets",
+      "description": {
+        "content": "S3-compatible bucket management operations.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "87d1aeaf-be5e-4a18-93b5-e79852d1d6c8",
+          "name": "List all buckets owned by the authenticated account (ListBuckets).",
+          "request": {
+            "name": "List all buckets owned by the authenticated account (ListBuckets).",
+            "description": {},
+            "url": {
+              "path": [
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/xml"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3a04a45b-3284-46cb-ae90-3d3875be6037",
+              "name": "Bucket list returned as S3 XML (ListAllMyBucketsResult).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/xml"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/xml"
+                }
+              ],
+              "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element>\n  <Buckets>\n    <Name>(string)</Name>\n    <CreationDate>(string)</CreationDate>\n  </Buckets>\n  <Buckets>\n    <Name>(string)</Name>\n    <CreationDate>(string)</CreationDate>\n  </Buckets>\n</element>",
+              "cookie": [],
+              "_postman_previewlanguage": "xml"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9254a733-7138-4cfd-bccb-7b2e12948a5c",
+          "name": "Create a bucket (CreateBucket).",
+          "request": {
+            "name": "Create a bucket (CreateBucket).",
+            "description": {
+              "content": "Creates a Tigris bucket. The default storage tier and other bucket settings may be provided via Tigris/S3 headers. Bucket names are global.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":bucket"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "bucket",
+                  "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                }
+              ]
+            },
+            "method": "PUT",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "79b7e70e-c0f6-4818-8420-70a309762bc1",
+              "name": "Bucket created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":bucket"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bucket",
+                      "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b230c3c3-8ca5-4195-b827-f2d1b51410bb",
+          "name": "Check that a bucket exists and is accessible (HeadBucket).",
+          "request": {
+            "name": "Check that a bucket exists and is accessible (HeadBucket).",
+            "description": {},
+            "url": {
+              "path": [
+                ":bucket"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "bucket",
+                  "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                }
+              ]
+            },
+            "method": "HEAD",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3f1cb4a6-6462-4c1f-9d3f-5d68f1efcbbb",
+              "name": "Bucket exists and is accessible.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":bucket"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bucket",
+                      "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "HEAD",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "bf738a19-2683-4569-b08f-78a102fbff9d",
+              "name": "Bucket not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":bucket"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bucket",
+                      "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "HEAD",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "811d3f00-2252-465e-b159-5687f706f37a",
+          "name": "Delete an empty bucket (DeleteBucket).",
+          "request": {
+            "name": "Delete an empty bucket (DeleteBucket).",
+            "description": {},
+            "url": {
+              "path": [
+                ":bucket"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "bucket",
+                  "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7871775f-ffa2-42d2-88f2-3a8b598ff5aa",
+              "name": "Bucket deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":bucket"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bucket",
+                      "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://t3.storage.dev",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "2c6232cd-8207-4b25-b0eb-5e8809e160c9",
+    "name": "Tigris Object Storage (S3-Compatible) Buckets API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Specification of the Tigris globally distributed object storage API. Tigris is compatible with the AWS S3 API, so the standard AWS S3 SDKs, tools, and libraries work unchanged against the Tigris endpoint at https://t3.storage.dev (the legacy host fly.storage.tigris.dev still resolves). Requests are authenticated with AWS Signature Version 4 using a Tigris access key id (tid_...) and secret access key (tsec_...). This document models the documented, supported subset of the S3 surface: bucket management, object CRUD, multipart upload, object tagging, storage-class tiering, and the path-style operations that back presigned URLs. The companion AWS IAM-compatible API is served at https://iam.storage.dev. Tigris is region-agnostic - use region \"auto\".\n\nContact Support:\n Name: Tigris Support\n Email: support@tigrisdata.com",
+      "type": "text/plain"
+    }
+  }
+}

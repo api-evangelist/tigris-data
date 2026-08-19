@@ -1,0 +1,335 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tigris Object Storage (S3-Compatible) Buckets Objects API",
+    "version": "2026-06-20"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Objects",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List objects in a bucket (ListObjectsV2 / ListObjects).",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://t3.storage.dev/:bucket",
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              },
+              {
+                "name": "list-type",
+                "value": "",
+                "type": "query",
+                "description": "Set to 2 for ListObjectsV2."
+              },
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Limits the response to keys that begin with the prefix."
+              },
+              {
+                "name": "delimiter",
+                "value": "",
+                "type": "query",
+                "description": "Groups keys sharing a common prefix into CommonPrefixes."
+              },
+              {
+                "name": "continuation-token",
+                "value": "",
+                "type": "query",
+                "description": "Token returned by a prior truncated response for pagination."
+              },
+              {
+                "name": "max-keys",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of keys to return."
+              },
+              {
+                "name": "encoding-type",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List objects in a bucket (ListObjectsV2 / ListObjects)."
+        },
+        {
+          "info": {
+            "name": "Download an object (GetObject), optionally ranged or conditional.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://t3.storage.dev/:bucket/:key",
+            "headers": [
+              {
+                "name": "Range",
+                "value": ""
+              },
+              {
+                "name": "If-Match",
+                "value": ""
+              },
+              {
+                "name": "If-None-Match",
+                "value": ""
+              },
+              {
+                "name": "If-Modified-Since",
+                "value": ""
+              },
+              {
+                "name": "If-Unmodified-Since",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "Object key. May contain slashes to emulate a directory hierarchy."
+              }
+            ]
+          },
+          "docs": "Download an object (GetObject), optionally ranged or conditional."
+        },
+        {
+          "info": {
+            "name": "Upload an object (PutObject) or copy an object (CopyObject).",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://t3.storage.dev/:bucket/:key",
+            "headers": [
+              {
+                "name": "x-amz-storage-class",
+                "value": ""
+              },
+              {
+                "name": "x-amz-copy-source",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "Object key. May contain slashes to emulate a directory hierarchy."
+              }
+            ]
+          },
+          "docs": "Stores an object. Supply x-amz-storage-class to set the tier (STANDARD, STANDARD_IA, GLACIER, GLACIER_IR). Provide x-amz-copy-source to perform a server-side CopyObject instead of a body upload. Custom metadata (x-amz-meta-*) and SHA256 checksums are supported."
+        },
+        {
+          "info": {
+            "name": "Delete an object (DeleteObject).",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://t3.storage.dev/:bucket/:key",
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "Object key. May contain slashes to emulate a directory hierarchy."
+              }
+            ]
+          },
+          "docs": "Delete an object (DeleteObject)."
+        },
+        {
+          "info": {
+            "name": "Retrieve object metadata without the body (HeadObject).",
+            "type": "http"
+          },
+          "http": {
+            "method": "HEAD",
+            "url": "https://t3.storage.dev/:bucket/:key",
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "Object key. May contain slashes to emulate a directory hierarchy."
+              }
+            ]
+          },
+          "docs": "Retrieve object metadata without the body (HeadObject)."
+        },
+        {
+          "info": {
+            "name": "Retrieve the tag set on an object (GetObjectTagging).",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://t3.storage.dev/:bucket/:key#tagging",
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "Object key. May contain slashes to emulate a directory hierarchy."
+              }
+            ]
+          },
+          "docs": "Retrieve the tag set on an object (GetObjectTagging)."
+        },
+        {
+          "info": {
+            "name": "Set the tag set on an object (PutObjectTagging).",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://t3.storage.dev/:bucket/:key#tagging",
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "Object key. May contain slashes to emulate a directory hierarchy."
+              }
+            ]
+          },
+          "docs": "Operates on the object's ?tagging subresource."
+        },
+        {
+          "info": {
+            "name": "Remove the tag set from an object (DeleteObjectTagging).",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://t3.storage.dev/:bucket/:key#tagging",
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "Object key. May contain slashes to emulate a directory hierarchy."
+              }
+            ]
+          },
+          "docs": "Remove the tag set from an object (DeleteObjectTagging)."
+        },
+        {
+          "info": {
+            "name": "Delete multiple objects in one request (DeleteObjects).",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://t3.storage.dev/:bucket#delete",
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              }
+            ]
+          },
+          "docs": "Operates on the bucket ?delete subresource. Supports quiet mode."
+        },
+        {
+          "info": {
+            "name": "Restore an archived (GLACIER) object (RestoreObject).",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://t3.storage.dev/:bucket/:key#restore",
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "Object key. May contain slashes to emulate a directory hierarchy."
+              }
+            ]
+          },
+          "docs": "Restores an object stored in the Archive tier so it becomes retrievable. Operates on the object ?restore subresource."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

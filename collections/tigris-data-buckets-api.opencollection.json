@@ -1,0 +1,94 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tigris Object Storage (S3-Compatible) Buckets API",
+    "version": "2026-06-20"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Buckets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all buckets owned by the authenticated account (ListBuckets).",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://t3.storage.dev/"
+          },
+          "docs": "List all buckets owned by the authenticated account (ListBuckets)."
+        },
+        {
+          "info": {
+            "name": "Create a bucket (CreateBucket).",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://t3.storage.dev/:bucket",
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              }
+            ]
+          },
+          "docs": "Creates a Tigris bucket. The default storage tier and other bucket settings may be provided via Tigris/S3 headers. Bucket names are global."
+        },
+        {
+          "info": {
+            "name": "Delete an empty bucket (DeleteBucket).",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://t3.storage.dev/:bucket",
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              }
+            ]
+          },
+          "docs": "Delete an empty bucket (DeleteBucket)."
+        },
+        {
+          "info": {
+            "name": "Check that a bucket exists and is accessible (HeadBucket).",
+            "type": "http"
+          },
+          "http": {
+            "method": "HEAD",
+            "url": "https://t3.storage.dev/:bucket",
+            "params": [
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "path",
+                "description": "Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+              }
+            ]
+          },
+          "docs": "Check that a bucket exists and is accessible (HeadBucket)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,698 @@
+{
+  "item": [
+    {
+      "id": "d6b0fb35-9696-4bdd-976c-3f34a7ef309b",
+      "name": "Multipart",
+      "description": {
+        "content": "S3-compatible multipart upload operations for large objects.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "29393230-a57d-4897-b296-f10971fc9aab",
+          "name": "Initiate a multipart upload (CreateMultipartUpload).",
+          "request": {
+            "name": "Initiate a multipart upload (CreateMultipartUpload).",
+            "description": {
+              "content": "Operates on the object ?uploads subresource and returns an UploadId.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":bucket",
+                "{{key}}"
+              ],
+              "hash": "uploads",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "bucket",
+                  "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "x-amz-storage-class",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Accept",
+                "value": "application/xml"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "81447a67-3347-4813-8416-60cdc838e39f",
+              "name": "Multipart upload initiated; UploadId returned.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":bucket",
+                    "{{key}}"
+                  ],
+                  "hash": "uploads",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bucket",
+                      "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "x-amz-storage-class",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/xml"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/xml"
+                }
+              ],
+              "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element>\n  <Bucket>(string)</Bucket>\n  <Key>(string)</Key>\n  <UploadId>(string)</UploadId>\n</element>",
+              "cookie": [],
+              "_postman_previewlanguage": "xml"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9fb620a4-3936-4b8e-adce-87f3d5c485f7",
+          "name": "Upload one part of a multipart upload (UploadPart / UploadPartCopy).",
+          "request": {
+            "name": "Upload one part of a multipart upload (UploadPart / UploadPartCopy).",
+            "description": {},
+            "url": {
+              "path": [
+                ":bucket",
+                "{{key}}"
+              ],
+              "hash": "partNumber",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "partNumber",
+                  "value": "<integer>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "uploadId",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "bucket",
+                  "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Source for an UploadPartCopy.",
+                "key": "x-amz-copy-source",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/octet-stream"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "file"
+            }
+          },
+          "response": [
+            {
+              "id": "4176166d-2343-4963-8a3d-bc894d9d1a37",
+              "name": "Part stored; ETag returned for use in CompleteMultipartUpload.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":bucket",
+                    "{{key}}"
+                  ],
+                  "hash": "partNumber",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "partNumber",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "uploadId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bucket",
+                      "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Source for an UploadPartCopy.",
+                    "key": "x-amz-copy-source",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "file"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c4baed85-b347-48be-bfa3-6b717130ff6e",
+          "name": "Complete a multipart upload (CompleteMultipartUpload).",
+          "request": {
+            "name": "Complete a multipart upload (CompleteMultipartUpload).",
+            "description": {},
+            "url": {
+              "path": [
+                ":bucket",
+                "{{key}}"
+              ],
+              "hash": "complete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "uploadId",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "bucket",
+                  "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/xml"
+              },
+              {
+                "key": "Accept",
+                "value": "application/xml"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element>\n  <Parts>\n    <PartNumber>(integer)</PartNumber>\n    <ETag>(string)</ETag>\n  </Parts>\n  <Parts>\n    <PartNumber>(integer)</PartNumber>\n    <ETag>(string)</ETag>\n  </Parts>\n</element>",
+              "options": {
+                "raw": {
+                  "language": "xml"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4bd5ad2c-b573-4966-95d7-1dd5bfe905ce",
+              "name": "Upload assembled into a single object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":bucket",
+                    "{{key}}"
+                  ],
+                  "hash": "complete",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "uploadId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bucket",
+                      "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/xml"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element>\n  <Parts>\n    <PartNumber>(integer)</PartNumber>\n    <ETag>(string)</ETag>\n  </Parts>\n  <Parts>\n    <PartNumber>(integer)</PartNumber>\n    <ETag>(string)</ETag>\n  </Parts>\n</element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/xml"
+                }
+              ],
+              "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element>\n  <Location>(string)</Location>\n  <Bucket>(string)</Bucket>\n  <Key>(string)</Key>\n  <ETag>(string)</ETag>\n</element>",
+              "cookie": [],
+              "_postman_previewlanguage": "xml"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "42f7a2e6-e037-415c-8d42-ba3e84a6a3ea",
+          "name": "List the uploaded parts of a multipart upload (ListParts).",
+          "request": {
+            "name": "List the uploaded parts of a multipart upload (ListParts).",
+            "description": {},
+            "url": {
+              "path": [
+                ":bucket",
+                "{{key}}"
+              ],
+              "hash": "complete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "uploadId",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "bucket",
+                  "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9372ae8c-97c9-453b-811e-ecb133681f6d",
+              "name": "Parts listing returned as S3 XML.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":bucket",
+                    "{{key}}"
+                  ],
+                  "hash": "complete",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "uploadId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bucket",
+                      "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ac5fd0ff-3ec0-4462-8293-1029717754f5",
+          "name": "Abort a multipart upload and discard its parts (AbortMultipartUpload).",
+          "request": {
+            "name": "Abort a multipart upload and discard its parts (AbortMultipartUpload).",
+            "description": {},
+            "url": {
+              "path": [
+                ":bucket",
+                "{{key}}"
+              ],
+              "hash": "complete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "uploadId",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "bucket",
+                  "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "00aaf5b9-48af-474b-a5e9-adf2144958cf",
+              "name": "Multipart upload aborted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":bucket",
+                    "{{key}}"
+                  ],
+                  "hash": "complete",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "uploadId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bucket",
+                      "description": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "52f09593-14f9-489f-9e9e-321f0535c346",
+          "name": "List in-progress multipart uploads in a bucket (ListMultipartUploads).",
+          "request": {
+            "name": "List in-progress multipart uploads in a bucket (ListMultipartUploads).",
+            "description": {},
+            "url": {
+              "path": [
+                "{{bucket}}"
+              ],
+              "hash": "uploads",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5e1fb3ad-69fc-4ee5-a025-560d9e9f92af",
+              "name": "In-progress multipart uploads returned as S3 XML.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "{{bucket}}"
+                  ],
+                  "hash": "uploads",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://t3.storage.dev",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) Object key. May contain slashes to emulate a directory hierarchy.",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "key"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) Bucket name (also usable as a virtual-host subdomain of t3.storage.dev).",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "bucket"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4e40e63a-b876-4d19-9cad-580f459c9292",
+    "name": "Tigris Object Storage (S3-Compatible) Buckets Multipart API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Specification of the Tigris globally distributed object storage API. Tigris is compatible with the AWS S3 API, so the standard AWS S3 SDKs, tools, and libraries work unchanged against the Tigris endpoint at https://t3.storage.dev (the legacy host fly.storage.tigris.dev still resolves). Requests are authenticated with AWS Signature Version 4 using a Tigris access key id (tid_...) and secret access key (tsec_...). This document models the documented, supported subset of the S3 surface: bucket management, object CRUD, multipart upload, object tagging, storage-class tiering, and the path-style operations that back presigned URLs. The companion AWS IAM-compatible API is served at https://iam.storage.dev. Tigris is region-agnostic - use region \"auto\".\n\nContact Support:\n Name: Tigris Support\n Email: support@tigrisdata.com",
+      "type": "text/plain"
+    }
+  }
+}
