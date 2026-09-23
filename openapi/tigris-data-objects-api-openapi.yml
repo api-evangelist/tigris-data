@@ -1,7 +1,7 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Tigris Object Storage (S3-Compatible) Buckets Objects API
-  description: 'Specification of the Tigris globally distributed object storage API. Tigris is compatible with the AWS S3 API, so the standard AWS S3 SDKs, tools, and libraries work unchanged against the Tigris endpoint at https://t3.storage.dev (the legacy host fly.storage.tigris.dev still resolves). Requests are authenticated with AWS Signature Version 4 using a Tigris access key id (tid_...) and secret access key (tsec_...). This document models the documented, supported subset of the S3 surface: bucket management, object CRUD, multipart upload, object tagging, storage-class tiering, and the path-style operations that back presigned URLs. The companion AWS IAM-compatible API is served at https://iam.storage.dev. Tigris is region-agnostic - use region "auto".'
+  title: Tigris Object Storage (S3-Compatible) Objects API
+  description: Specification of the Tigris globally distributed object storage API.
   termsOfService: https://www.tigrisdata.com/docs/legal/terms-of-service/
   contact:
     name: Tigris Support
@@ -26,7 +26,7 @@ paths:
       operationId: listObjectsV2
       tags:
       - Objects
-      summary: List objects in a bucket (ListObjectsV2 / ListObjects).
+      summary: List objects in a bucket (ListObjectsV2 / ListObjects)
       parameters:
       - name: list-type
         in: query
@@ -76,7 +76,7 @@ paths:
       operationId: putObject
       tags:
       - Objects
-      summary: Upload an object (PutObject) or copy an object (CopyObject).
+      summary: Upload an object (PutObject) or copy an object (CopyObject)
       description: Stores an object. Supply x-amz-storage-class to set the tier (STANDARD, STANDARD_IA, GLACIER, GLACIER_IR). Provide x-amz-copy-source to perform a server-side CopyObject instead of a body upload. Custom metadata (x-amz-meta-*) and SHA256 checksums are supported.
       parameters:
       - name: x-amz-storage-class
@@ -112,7 +112,7 @@ paths:
       operationId: getObject
       tags:
       - Objects
-      summary: Download an object (GetObject), optionally ranged or conditional.
+      summary: Download an object (GetObject), optionally ranged or conditional
       parameters:
       - name: Range
         in: header
@@ -153,7 +153,7 @@ paths:
       operationId: headObject
       tags:
       - Objects
-      summary: Retrieve object metadata without the body (HeadObject).
+      summary: Retrieve object metadata without the body (HeadObject)
       responses:
         '200':
           description: Object metadata returned in headers.
@@ -163,7 +163,7 @@ paths:
       operationId: deleteObject
       tags:
       - Objects
-      summary: Delete an object (DeleteObject).
+      summary: Delete an object (DeleteObject)
       responses:
         '204':
           description: Object deleted.
@@ -175,7 +175,7 @@ paths:
       operationId: putObjectTagging
       tags:
       - Objects
-      summary: Set the tag set on an object (PutObjectTagging).
+      summary: Set the tag set on an object (PutObjectTagging)
       description: Operates on the object's ?tagging subresource.
       requestBody:
         required: true
@@ -190,7 +190,7 @@ paths:
       operationId: getObjectTagging
       tags:
       - Objects
-      summary: Retrieve the tag set on an object (GetObjectTagging).
+      summary: Retrieve the tag set on an object (GetObjectTagging)
       responses:
         '200':
           description: Tag set returned.
@@ -202,7 +202,7 @@ paths:
       operationId: deleteObjectTagging
       tags:
       - Objects
-      summary: Remove the tag set from an object (DeleteObjectTagging).
+      summary: Remove the tag set from an object (DeleteObjectTagging)
       responses:
         '204':
           description: Tag set removed.
@@ -213,7 +213,7 @@ paths:
       operationId: deleteObjects
       tags:
       - Objects
-      summary: Delete multiple objects in one request (DeleteObjects).
+      summary: Delete multiple objects in one request (DeleteObjects)
       description: Operates on the bucket ?delete subresource. Supports quiet mode.
       requestBody:
         required: true
@@ -232,7 +232,7 @@ paths:
       operationId: restoreObject
       tags:
       - Objects
-      summary: Restore an archived (GLACIER) object (RestoreObject).
+      summary: Restore an archived (GLACIER) object (RestoreObject)
       description: Restores an object stored in the Archive tier so it becomes retrievable. Operates on the object ?restore subresource.
       responses:
         '202':
@@ -255,26 +255,18 @@ components:
                 type: string
               VersionId:
                 type: string
-    Object:
+    Tagging:
       type: object
       properties:
-        Key:
-          type: string
-        LastModified:
-          type: string
-          format: date-time
-        ETag:
-          type: string
-        Size:
-          type: integer
-          format: int64
-        StorageClass:
-          type: string
-          enum:
-          - STANDARD
-          - STANDARD_IA
-          - GLACIER
-          - GLACIER_IR
+        TagSet:
+          type: array
+          items:
+            type: object
+            properties:
+              Key:
+                type: string
+              Value:
+                type: string
     ListBucketResult:
       type: object
       properties:
@@ -301,18 +293,26 @@ components:
             properties:
               Prefix:
                 type: string
-    Tagging:
+    Object:
       type: object
       properties:
-        TagSet:
-          type: array
-          items:
-            type: object
-            properties:
-              Key:
-                type: string
-              Value:
-                type: string
+        Key:
+          type: string
+        LastModified:
+          type: string
+          format: date-time
+        ETag:
+          type: string
+        Size:
+          type: integer
+          format: int64
+        StorageClass:
+          type: string
+          enum:
+          - STANDARD
+          - STANDARD_IA
+          - GLACIER
+          - GLACIER_IR
   parameters:
     Key:
       name: key
