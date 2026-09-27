@@ -63,14 +63,6 @@ paths:
         '204':
           description: Bucket deleted.
 components:
-  parameters:
-    Bucket:
-      name: bucket
-      in: path
-      required: true
-      description: Bucket name (also usable as a virtual-host subdomain of t3.storage.dev).
-      schema:
-        type: string
   schemas:
     ListAllMyBucketsResult:
       type: object
@@ -85,6 +77,14 @@ components:
               CreationDate:
                 type: string
                 format: date-time
+  parameters:
+    Bucket:
+      name: bucket
+      in: path
+      required: true
+      description: Bucket name (also usable as a virtual-host subdomain of t3.storage.dev).
+      schema:
+        type: string
   securitySchemes:
     sigv4:
       type: apiKey

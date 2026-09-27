@@ -241,6 +241,26 @@ paths:
           description: Restore already in progress or completed.
 components:
   schemas:
+    Object:
+      type: object
+      properties:
+        Key:
+          type: string
+        LastModified:
+          type: string
+          format: date-time
+        ETag:
+          type: string
+        Size:
+          type: integer
+          format: int64
+        StorageClass:
+          type: string
+          enum:
+          - STANDARD
+          - STANDARD_IA
+          - GLACIER
+          - GLACIER_IR
     Delete:
       type: object
       properties:
@@ -254,18 +274,6 @@ components:
               Key:
                 type: string
               VersionId:
-                type: string
-    Tagging:
-      type: object
-      properties:
-        TagSet:
-          type: array
-          items:
-            type: object
-            properties:
-              Key:
-                type: string
-              Value:
                 type: string
     ListBucketResult:
       type: object
@@ -293,39 +301,31 @@ components:
             properties:
               Prefix:
                 type: string
-    Object:
+    Tagging:
       type: object
       properties:
-        Key:
-          type: string
-        LastModified:
-          type: string
-          format: date-time
-        ETag:
-          type: string
-        Size:
-          type: integer
-          format: int64
-        StorageClass:
-          type: string
-          enum:
-          - STANDARD
-          - STANDARD_IA
-          - GLACIER
-          - GLACIER_IR
+        TagSet:
+          type: array
+          items:
+            type: object
+            properties:
+              Key:
+                type: string
+              Value:
+                type: string
   parameters:
-    Key:
-      name: key
-      in: path
-      required: true
-      description: Object key. May contain slashes to emulate a directory hierarchy.
-      schema:
-        type: string
     Bucket:
       name: bucket
       in: path
       required: true
       description: Bucket name (also usable as a virtual-host subdomain of t3.storage.dev).
+      schema:
+        type: string
+    Key:
+      name: key
+      in: path
+      required: true
+      description: Object key. May contain slashes to emulate a directory hierarchy.
       schema:
         type: string
   securitySchemes:
