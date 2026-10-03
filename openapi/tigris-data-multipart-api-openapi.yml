@@ -148,6 +148,21 @@ paths:
         '200':
           description: In-progress multipart uploads returned as S3 XML.
 components:
+  parameters:
+    Key:
+      name: key
+      in: path
+      required: true
+      description: Object key. May contain slashes to emulate a directory hierarchy.
+      schema:
+        type: string
+    Bucket:
+      name: bucket
+      in: path
+      required: true
+      description: Bucket name (also usable as a virtual-host subdomain of t3.storage.dev).
+      schema:
+        type: string
   schemas:
     CompleteMultipartUploadResult:
       type: object
@@ -159,15 +174,6 @@ components:
         Key:
           type: string
         ETag:
-          type: string
-    InitiateMultipartUploadResult:
-      type: object
-      properties:
-        Bucket:
-          type: string
-        Key:
-          type: string
-        UploadId:
           type: string
     CompleteMultipartUpload:
       type: object
@@ -181,21 +187,15 @@ components:
                 type: integer
               ETag:
                 type: string
-  parameters:
-    Bucket:
-      name: bucket
-      in: path
-      required: true
-      description: Bucket name (also usable as a virtual-host subdomain of t3.storage.dev).
-      schema:
-        type: string
-    Key:
-      name: key
-      in: path
-      required: true
-      description: Object key. May contain slashes to emulate a directory hierarchy.
-      schema:
-        type: string
+    InitiateMultipartUploadResult:
+      type: object
+      properties:
+        Bucket:
+          type: string
+        Key:
+          type: string
+        UploadId:
+          type: string
   securitySchemes:
     sigv4:
       type: apiKey
