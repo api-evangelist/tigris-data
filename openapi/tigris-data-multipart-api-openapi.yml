@@ -164,6 +164,15 @@ components:
       schema:
         type: string
   schemas:
+    InitiateMultipartUploadResult:
+      type: object
+      properties:
+        Bucket:
+          type: string
+        Key:
+          type: string
+        UploadId:
+          type: string
     CompleteMultipartUploadResult:
       type: object
       properties:
@@ -187,15 +196,6 @@ components:
                 type: integer
               ETag:
                 type: string
-    InitiateMultipartUploadResult:
-      type: object
-      properties:
-        Bucket:
-          type: string
-        Key:
-          type: string
-        UploadId:
-          type: string
   securitySchemes:
     sigv4:
       type: apiKey

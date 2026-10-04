@@ -241,6 +241,18 @@ paths:
           description: Restore already in progress or completed.
 components:
   schemas:
+    Tagging:
+      type: object
+      properties:
+        TagSet:
+          type: array
+          items:
+            type: object
+            properties:
+              Key:
+                type: string
+              Value:
+                type: string
     Object:
       type: object
       properties:
@@ -261,32 +273,6 @@ components:
           - STANDARD_IA
           - GLACIER
           - GLACIER_IR
-    Delete:
-      type: object
-      properties:
-        Quiet:
-          type: boolean
-        Objects:
-          type: array
-          items:
-            type: object
-            properties:
-              Key:
-                type: string
-              VersionId:
-                type: string
-    Tagging:
-      type: object
-      properties:
-        TagSet:
-          type: array
-          items:
-            type: object
-            properties:
-              Key:
-                type: string
-              Value:
-                type: string
     ListBucketResult:
       type: object
       properties:
@@ -312,6 +298,20 @@ components:
             type: object
             properties:
               Prefix:
+                type: string
+    Delete:
+      type: object
+      properties:
+        Quiet:
+          type: boolean
+        Objects:
+          type: array
+          items:
+            type: object
+            properties:
+              Key:
+                type: string
+              VersionId:
                 type: string
   parameters:
     Key:
