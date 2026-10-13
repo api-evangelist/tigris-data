@@ -1,0 +1,12 @@
+fetched: '2026-10-13'
+method: fetched
+source: https://www.tigrisdata.com/docs/api/s3/
+page: https://www.tigrisdata.com/docs/api/s3/
+file: tigris-data-aws-s3-1.md
+bytes: 7227
+sha256: 04efee76aa8f2b31f35b8c6b056a6c627e605d495682a1755d6082525e15dbd8
+anchor: amazon-web-services
+shape: aws-s3
+classification: declares-compatibility
+quote: S3 API Compatibility | Tigris Object Storage Documentation Skip to main content
+note: text extracted from the provider's own page (tags stripped), saved for evidence

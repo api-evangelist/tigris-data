@@ -1,0 +1,77 @@
+edges:
+- partner_name: Amazon Web Services
+  partner: amazon-web-services
+  partner_match: shape-anchor
+  channel: provider-built
+  relationship: compatible
+  direction: provider-built
+  shape: aws-s3
+  type: docs
+  degree: declared-subset
+  evidence: https://www.tigrisdata.com/docs/api/s3/
+  evidence_kind: own-docs
+  evidence_file: https://github.com/api-evangelist/tigris-data/blob/main/evidence/compatibility/tigris-data-aws-s3-1.md
+  quote: S3 API Compatibility | Tigris Object Storage Documentation Skip to main content
+  supported_operations:
+  - AbortMultipartUpload
+  - CompleteMultipartUpload
+  - CopyObject
+  - CreateBucket
+  - CreateMultipartUpload
+  - DeleteBucket
+  - DeleteBucketCors
+  - DeleteBucketEncryption
+  - DeleteBucketLifecycle
+  - DeleteBucketTagging
+  - DeleteObject
+  - DeleteObjectTagging
+  - DeleteObjects
+  - GetBucketAcl
+  - GetBucketCors
+  - GetBucketEncryption
+  - GetBucketLifecycleConfiguration
+  - GetBucketLocation
+  - GetBucketNotificationConfiguration
+  - GetBucketTagging
+  - GetObject
+  - GetObjectAcl
+  - GetObjectTagging
+  - HeadBucket
+  - HeadObject
+  - ListBuckets
+  - ListMultipartUploads
+  - ListObjectVersions
+  - ListObjects
+  - ListObjectsV2
+  - ListParts
+  - PutBucketAcl
+  - PutBucketCors
+  - PutBucketEncryption
+  - PutBucketLifecycleConfiguration
+  - PutBucketTagging
+  - PutObject
+  - PutObjectAcl
+  - PutObjectTagging
+  - RestoreObject
+  - UploadPart
+  - UploadPartCopy
+  unsupported_operations:
+  - GetBucketPolicy
+  - GetBucketVersioning
+  - PutBucketNotificationConfiguration
+  - PutBucketPolicy
+  - PutBucketVersioning
+  supported_share: 0.627
+  structural_match:
+    file: tigris-data/openapi/tigris-data-multipart-api-openapi.yml
+    ops:
+    - AbortMultipartUpload
+    - CompleteMultipartUpload
+    - CreateMultipartUpload
+    - ListMultipartUploads
+    - ListParts
+    - UploadPart
+  detected_by: sweep-shape-compat.py
+  first_seen: '2026-10-13'
+generated: '2026-10-13'
+method: searched
