@@ -172,6 +172,35 @@ edges:
     detected: '2026-10-20'
   detected_by: sweep-agent-skills.py
   first_seen: '2026-10-20'
+- partner_name: Andreessen Horowitz (a16z)
+  partner: a16z
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://a16z.com/companies/tigris-data/
+  category: vc portfolio participation
+  contract_reference:
+    register: a16z portfolio (a16z.com/portfolio/, the page's own data-companies JSON)
+    standard: null
+    spec_file: null
+    role: vc-portfolio-company
+    registered_name: Tigris Data
+    register_id: https://a16z.com/companies/tigris-data/
+    register_country: null
+    register_website: https://tigrisdata.com
+    matched_domain: tigrisdata.com
+    matched_by: domain
+    signal_note: 'participation only: the venture firm''s own published portfolio lists the company (investment);
+      an ownership and participation record, not conformance or certification'
+    detected_by: sweep-vc-portfolios.py
+    detected: '2026-10-21'
+    year: '2023'
+    status: Active
+    sector: Enterprise;Infra;Seed
+  detected_by: sweep-vc-portfolios.py
+  first_seen: '2026-10-21'
 - partner_name: OpenTofu (opentofu-registry)
   partner: opentofu
   partner_match: mirror
@@ -206,35 +235,43 @@ edges:
   detected: '2026-10-21'
   detected_by: mirror-platform-listings.py
   category: infrastructure-as-code provider registry listing
-- partner_name: Andreessen Horowitz (a16z)
-  partner: a16z
-  partner_match: register
-  type: register
-  channel: standard-directory
-  relationship: standard-participant
-  direction: partner-built
-  evidence: https://a16z.com/companies/tigris-data/
-  category: vc portfolio participation
-  contract_reference:
-    register: a16z portfolio (a16z.com/portfolio/, the page's own data-companies JSON)
-    standard: null
-    spec_file: null
-    role: vc-portfolio-company
-    registered_name: Tigris Data
-    register_id: https://a16z.com/companies/tigris-data/
-    register_country: null
-    register_website: https://tigrisdata.com
-    matched_domain: tigrisdata.com
-    matched_by: domain
-    signal_note: 'participation only: the venture firm''s own published portfolio lists the company (investment);
-      an ownership and participation record, not conformance or certification'
-    detected_by: sweep-vc-portfolios.py
-    detected: '2026-10-21'
-    year: '2023'
-    status: Active
-    sector: Enterprise;Infra;Seed
-  detected_by: sweep-vc-portfolios.py
-  first_seen: '2026-10-21'
+- partner_name: Netlify (own)
+  partner: netlify
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://www.netlify.com/integrations/tigris/
+  mirror_of: netlify/integrations/netlify-integration-edges.yml
+  apps:
+  - Tigris
+  - Tigris Starter
+  listing_count: 1
+  detected: '2026-10-22'
+  detected_by: mirror-platform-listings.py
+  category: Database
+  partner_tier: listing
+- partner_name: Vercel (own)
+  partner: vercel
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://vercel.com/marketplace/tigris
+  mirror_of: vercel/integrations/vercel-integration-edges.yml
+  apps:
+  - Tigris
+  listing_count: 1
+  detected: '2026-10-22'
+  detected_by: mirror-platform-listings.py
+  category: Storage
+  partner_tier: third-party
 generated: '2026-10-13'
 method: searched
 source:
@@ -258,3 +295,5 @@ checked:
 - https://www.indexventures.com/companies/
 - https://www.sequoiacap.com/our-companies/
 - https://www.sequoiacap.com/sitemap.xml
+- netlify/integrations/netlify-integration-edges.yml
+- vercel/integrations/vercel-integration-edges.yml
