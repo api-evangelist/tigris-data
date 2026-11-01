@@ -1,4 +1,4 @@
-# Tigris (tigris-data)
+# Tigris
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,160 +66,121 @@
 
 Tigris is a globally distributed, multi-cloud, S3-compatible object storage service. Data is automatically placed close to where it is read for low latency worldwide, with no egress fees. The storage API speaks the AWS S3 protocol at https://t3.storage.dev (formerly fly.storage.tigris.dev) so existing boto3, AWS SDK, and S3 clients work unchanged, with companion IAM and CloudFront-compatible APIs for access keys and public-key signing.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/tigris-data/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/tigris-data/refs/heads/main/apis.yml)
+**Areas:** Object Storage · S3 Compatible · Storage · Multi-Cloud · Globally Distributed
 
-## Tags
+## Tigris on APIs.io
 
-- Object Storage
-- S3 Compatible
-- Storage
-- Multi-Cloud
-- Globally Distributed
+Everything profiled for Tigris is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/tigris-data/](https://apis.io/providers/tigris-data/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (3)
 
-- **Created:** 2026-06-20
-- **Modified:** 2026-06-20
+- [Tigris Buckets API](https://apis.io/apis/tigris-data/tigris-data-buckets-api/) — S3-compatible bucket management operations.
+- [Tigris Multipart API](https://apis.io/apis/tigris-data/tigris-data-multipart-api/) — S3-compatible multipart upload operations for large objects.
+- [Tigris Objects API](https://apis.io/apis/tigris-data/tigris-data-objects-api/) — S3-compatible object CRUD, tagging, and tiering operations.
 
-## APIs
+### Published properties
 
-### Tigris Object Storage (S3-Compatible) API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-AWS S3-compatible object operations - PutObject, GetObject, HeadObject, CopyObject, DeleteObject, DeleteObjects, ListObjectsV2, object tagging, ranged and conditional reads, and storage-class tiering - served at https://t3.storage.dev and authenticated with AWS Signature Version 4.
+#### Agentic access (1)
 
-- **Human URL:** [https://www.tigrisdata.com/docs/api/s3/](https://www.tigrisdata.com/docs/api/s3/)
-- **Base URL:** `https://t3.storage.dev`
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Tags
+- [Tigris Data Agentic Access](https://apis.io/agentic-access/tigris-data/tigris-data-agentic-access/)
 
-- Object Storage
-- S3 Compatible
-- Objects
+#### Collections (4)
 
-#### Properties
+Postman and Open Collection request collections.
 
-- [Documentation](https://www.tigrisdata.com/docs/objects/)
-- [API Reference](https://www.tigrisdata.com/docs/api/s3/)
-- [OpenAPI](openapi/tigris-data-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/tigris-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/tigris-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Tigris Object Storage (S3-Compatible) API](https://apis.io/collections/tigris-data/open-tigris-data/)
+- [Tigris Object Storage (S3-Compatible) Buckets API](https://apis.io/collections/tigris-data/open-tigris-data-buckets-api/)
+- [Tigris Object Storage (S3-Compatible) Buckets Multipart API](https://apis.io/collections/tigris-data/open-tigris-data-multipart-api/)
+- [Tigris Object Storage (S3-Compatible) Buckets Objects API](https://apis.io/collections/tigris-data/open-tigris-data-objects-api/)
 
-### Tigris Bucket Management API
+#### Security (3)
 
-S3-compatible bucket lifecycle and configuration - CreateBucket, ListBuckets, HeadBucket, DeleteBucket, plus CORS, lifecycle, tagging, ownership controls, notification configuration, and ACL settings on Tigris buckets.
+Authentication, trust centre, and vulnerability disclosure.
 
-- **Human URL:** [https://www.tigrisdata.com/docs/buckets/](https://www.tigrisdata.com/docs/buckets/)
-- **Base URL:** `https://t3.storage.dev`
+- [Tigris Data Authentication](https://apis.io/security/tigris-data/tigris-data-authentication/)
+- [Tigris Data Domain Security](https://apis.io/security/tigris-data/tigris-data-domain-security/)
+- [Tigris Data Trust Center](https://apis.io/security/tigris-data/tigris-data-trust-center/)
 
-#### Tags
+#### Plans and pricing (1)
 
-- Buckets
-- S3 Compatible
-- Management
+Published plans, tiers and prices.
 
-#### Properties
+- [Tigris Data Plans Pricing](https://apis.io/plans/tigris-data/tigris-data-plans-pricing/)
 
-- [Documentation](https://www.tigrisdata.com/docs/buckets/)
-- [API Reference](https://www.tigrisdata.com/docs/api/s3/)
-- [OpenAPI](openapi/tigris-data-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/tigris-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/tigris-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Rate limits (1)
 
-### Tigris Multipart Upload API
+Published request limits.
 
-S3-compatible multipart upload flow for large objects - CreateMultipartUpload, UploadPart, UploadPartCopy, ListParts, ListMultipartUploads, CompleteMultipartUpload, and AbortMultipartUpload.
+- [Tigris Data Rate Limits](https://apis.io/rate-limits/tigris-data/tigris-data-rate-limits/)
 
-- **Human URL:** [https://www.tigrisdata.com/docs/objects/](https://www.tigrisdata.com/docs/objects/)
-- **Base URL:** `https://t3.storage.dev`
+#### FinOps (1)
 
-#### Tags
+What the API costs to run, by operation.
 
-- Multipart
-- Uploads
-- Large Objects
+- [Tigris Data Finops](https://apis.io/finops/tigris-data/tigris-data-finops/)
 
-#### Properties
+## Where to find this API
 
-- [Documentation](https://www.tigrisdata.com/docs/objects/)
-- [API Reference](https://www.tigrisdata.com/docs/api/s3/)
-- [OpenAPI](openapi/tigris-data-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/tigris-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/tigris-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-### Tigris Presigned URLs API
-
-SigV4 presigned URLs for time-limited, credential-free object access - PresignGetObject, PresignPutObject, PresignHeadObject, PresignDeleteObject, and PresignUploadPart.
-
-- **Human URL:** [https://www.tigrisdata.com/docs/objects/presigned-urls/](https://www.tigrisdata.com/docs/objects/presigned-urls/)
-- **Base URL:** `https://t3.storage.dev`
-
-#### Tags
-
-- Presigned URLs
-- Temporary Access
-- S3 Compatible
-
-#### Properties
-
-- [Documentation](https://www.tigrisdata.com/docs/objects/presigned-urls/)
-- [API Reference](https://www.tigrisdata.com/docs/api/s3/)
-- [OpenAPI](openapi/tigris-data-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/tigris-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/tigris-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Tigris IAM and Access Keys API
-
-AWS IAM-compatible API served at https://iam.storage.dev for managing access keys and policies - CreateAccessKey, ListAccessKeys, UpdateAccessKey, DeleteAccessKey, CreatePolicy, GetPolicy, ListPolicies, DeletePolicy, AttachUserPolicy, DetachUserPolicy, and ListUserPolicies. Tigris IAM uses policies attached directly to access keys rather than IAM users, groups, or roles.
-
-- **Human URL:** [https://www.tigrisdata.com/docs/iam/](https://www.tigrisdata.com/docs/iam/)
-- **Base URL:** `https://iam.storage.dev`
-
-#### Tags
-
-- IAM
-- Access Keys
-- Policies
-
-#### Properties
-
-- [Documentation](https://www.tigrisdata.com/docs/iam/)
-- [API Reference](https://www.tigrisdata.com/docs/api/s3/)
-- [OpenAPI](openapi/tigris-data-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/tigris-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/tigris-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Tigris Object Tiering API
-
-Storage-class tiering using S3-compatible classes - STANDARD, STANDARD_IA (Infrequent Access), GLACIER (Archive), and GLACIER_IR (Archive Instant Retrieval) - set per bucket default or per object via the x-amz-storage-class header, with RestoreObject to restore archived objects.
-
-- **Human URL:** [https://www.tigrisdata.com/docs/objects/tiers/](https://www.tigrisdata.com/docs/objects/tiers/)
-- **Base URL:** `https://t3.storage.dev`
-
-#### Tags
-
-- Storage Tiers
-- Lifecycle
-- Cost Optimization
-
-#### Properties
-
-- [Documentation](https://www.tigrisdata.com/docs/objects/tiers/)
-- [API Reference](https://www.tigrisdata.com/docs/api/s3/)
-- [OpenAPI](openapi/tigris-data-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/tigris-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/tigris-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/tigrisdata)
-- [LinkedIn](https://www.linkedin.com/company/tigrisdata)
 - [Website](https://www.tigrisdata.com)
 - [Documentation](https://www.tigrisdata.com/docs/)
-- [Plans](plans/tigris-data-plans-pricing.yml)
-- [Rate Limits](rate-limits/tigris-data-rate-limits.yml)
-- [Fin Ops](finops/tigris-data-finops.yml)
+- [Blog](https://www.tigrisdata.com/blog/rss.xml)
+- [GitHub](https://github.com/tigrisdata)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 28.1** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 44.1 |
+| Contract governance | 0.0 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 32.1 |
+| Access clarity | 15.8 |
+
+**Agent readiness 19.6** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 16.7** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/tigris-data/](https://apis.io/providers/tigris-data/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Tigris: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/tigris-data/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
